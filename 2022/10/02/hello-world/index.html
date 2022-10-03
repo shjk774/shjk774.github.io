@@ -22,9 +22,9 @@
 
   <meta name="description" content="用hackbar解决include问题安装hackbar第一步1安装  下载链接 1.记住文件目录 2.火狐打开扩展与插件，设置中使用从文件安装附加组件 3.选择{4c98c9c7-fc13-4622-b08a-a18923469c1c}.xpi 第二步1data:&#x2F;&#x2F; 协议   Generating  1.为了执行php代码，要使用data:&#x2F;&#x2F; 协议 2.由题可知使用的是p">
 <meta property="og:type" content="article">
-<meta property="og:title" content="220622">
+<meta property="og:title" content="220622沙瑞金">
 <meta property="og:url" content="http://example.com/2022/10/02/hello-world/index.html">
-<meta property="og:site_name" content="220622">
+<meta property="og:site_name" content="220622沙瑞金">
 <meta property="og:description" content="用hackbar解决include问题安装hackbar第一步1安装  下载链接 1.记住文件目录 2.火狐打开扩展与插件，设置中使用从文件安装附加组件 3.选择{4c98c9c7-fc13-4622-b08a-a18923469c1c}.xpi 第二步1data:&#x2F;&#x2F; 协议   Generating  1.为了执行php代码，要使用data:&#x2F;&#x2F; 协议 2.由题可知使用的是p">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2022/10/02/hello-world/ioi.jpg">
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title> | 220622</title>
+  <title> | 220622沙瑞金</title>
   
 
 
@@ -100,7 +100,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">220622</h1>
+      <h1 class="site-title">220622沙瑞金</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -163,7 +163,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="220622">
+      <meta itemprop="name" content="220622沙瑞金">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -188,6 +188,20 @@
               </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2022/10/02/hello-world/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/10/02/hello-world/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -241,6 +255,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -388,6 +403,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'I15RzqdtBWsCWldwlNl7wknC-gzGzoHsz',
+      appKey     : 'Tewc65wwnuC3MiVb1tKHE1Bf',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>
