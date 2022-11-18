@@ -79,4 +79,115 @@
 <p>插入转移符号\x00,\n,\r,\ ‘,\ “,\x1a;</p>
 ]]></content>
   </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/15/sjk/</url>
+    <content><![CDATA[<p>upload labs第二关卡</p>
+<p>MIME检测</p>
+<table>
+<thead>
+<tr>
+<th>.js</th>
+<th>application&#x2F;x-javascript</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.html</td>
+<td>text&#x2F;html</td>
+</tr>
+<tr>
+<td>.jpg</td>
+<td>image&#x2F;jpeg</td>
+</tr>
+<tr>
+<td>.pdf</td>
+<td>application&#x2F;pdf</td>
+</tr>
+<tr>
+<td>.png</td>
+<td>image&#x2F;png</td>
+</tr>
+</tbody></table>
+<p>isset()检测变量是否被设置</p>
+<p>返回’ture’ 抑或是’false’</p>
+<p>如果一次传入多个参数，那么 isset() 只有在全部参数都被设置时返回 TRUE，计算过程从左至右，中途遇到没有设置的变量时就会立即停止。</p>
+<p>结果为ture 才会运行</p>
+<p>观察得到是MIME检测，修改content type为image&#x2F;jpeg</p>
+<p><strong>然后上传</strong></p>
+<p>使用蚂蚁链接</p>
+<p>forward之后 用浏览器打开地址连接蚂蚁</p>
+<p>upload labs第三关卡</p>
+<p>函数一trim(“”,)</p>
+<p>过滤文件名，且含有把文件名转化为小写的代码</p>
+<p>修改文件后缀为phptml上传成功</p>
+<p>upload labs第四关卡</p>
+<p>有点问题</p>
+<p>upload labs第五关卡</p>
+<p>upload labs第六关卡</p>
+<p>upload labs第七关卡</p>
+<p>根据windows自动去掉后缀名之后的.的特性</p>
+<p>使用burp抓包</p>
+<p>把ghjk.php改为ghjk.php.</p>
+<p>发送，完成</p>
+<p><img src="/2022/11/15/sjk/sjk%5Cghj.jpg" alt="ghj"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>jk</title>
+    <url>/2022/11/15/jk/</url>
+    <content><![CDATA[<p>upload labs第二关卡</p>
+<p>MIME检测</p>
+<table>
+<thead>
+<tr>
+<th>.js</th>
+<th>application&#x2F;x-javascript</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.html</td>
+<td>text&#x2F;html</td>
+</tr>
+<tr>
+<td>.jpg</td>
+<td>image&#x2F;jpeg</td>
+</tr>
+<tr>
+<td>.pdf</td>
+<td>application&#x2F;pdf</td>
+</tr>
+<tr>
+<td>.png</td>
+<td>image&#x2F;png</td>
+</tr>
+</tbody></table>
+<p>isset()检测变量是否被设置</p>
+<p>返回’ture’ 抑或是’false’</p>
+<p>如果一次传入多个参数，那么 isset() 只有在全部参数都被设置时返回 TRUE，计算过程从左至右，中途遇到没有设置的变量时就会立即停止。</p>
+<p>结果为ture 才会运行</p>
+<p>观察得到是MIME检测，修改content type为image&#x2F;jpeg</p>
+<p><strong>然后上传</strong></p>
+<p>使用蚂蚁链接</p>
+<p>forward之后 用浏览器打开地址连接蚂蚁</p>
+<p>upload labs第三关卡</p>
+<p>函数一trim(“”,)</p>
+<p>过滤文件名，且含有把文件名转化为小写的代码</p>
+<p>修改文件后缀为phptml上传成功</p>
+<p>upload labs第四关卡</p>
+<p>有点问题</p>
+<p>upload labs第五关卡</p>
+<p>upload labs第六关卡</p>
+<p>upload labs第七关卡</p>
+<p>根据windows自动去掉后缀名之后的.的特性</p>
+<p>使用burp抓包</p>
+<p>把ghjk.php改为ghjk.php.</p>
+<p>发送，完成</p>
+<p><img src="/2022/11/15/jk/ghj.jpg" alt="题图"></p>
+<p>upload labs 第8关卡</p>
+<p>upload labs 第9关卡</p>
+<p>观察源码会先去掉  .  然后再去掉::$DATA</p>
+<p>则可以使用php.::$DATA.,借用Windows自动去掉点的特性上传文件</p>
+<p>upload labs 第10关卡</p>
+]]></content>
+  </entry>
 </search>
