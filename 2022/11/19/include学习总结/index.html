@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title> - EZzz</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="1.PHP 在线工具 | 菜鸟工具 (runoob.com)
+原理
+在通过PHP的函数引入文件时，由于传入的文件名没有经过合理的校验，从而操作了预想之外的文件，导致意外的文件泄露甚至恶意的代码注入。,"> 
+    
+    <link rel="alternative" href="atom.xml" title="EZzz" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+    
+    
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content=" - EZzz"/>
+    <meta name="twitter:description" content="1.PHP 在线工具 | 菜鸟工具 (runoob.com)
+原理
+在通过PHP的函数引入文件时，由于传入的文件名没有经过合理的校验，从而操作了预想之外的文件，导致意外的文件泄露甚至恶意的代码注入。,"/>
+    
+    
+    
+    
+    <meta property="og:site_name" content="EZzz"/>
+    <meta property="og:type" content="object"/>
+    <meta property="og:title" content=" - EZzz"/>
+    <meta property="og:description" content="1.PHP 在线工具 | 菜鸟工具 (runoob.com)
+原理
+在通过PHP的函数引入文件时，由于传入的文件名没有经过合理的校验，从而操作了预想之外的文件，导致意外的文件泄露甚至恶意的代码注入。,"/>
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+    <script>window.searchDbPath = "/search.xml";</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EZzz</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle"></h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title"></h1>
+        <div class="stuff">
+            <span>十一月 19, 2022</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <p>1.<a target="_blank" rel="noopener" href="https://c.runoob.com/compile/1/">PHP 在线工具 | 菜鸟工具 (runoob.com)</a></p>
+<p>原理</p>
+<p>在通过PHP的函数引入文件时，由于传入的文件名没有经过合理的校验，从而操作了预想之外的文件，导致意外的文件泄露甚至恶意的代码注入。</p>
+<ol start="2">
+<li></li>
+</ol>
+<p>include() # 当使用该函数包含文件时，只有代码执行到 include()函数时才将文件包含 进来，发生错误时之给出一个警告，继续向下执行。</p>
+<p>require() # require()与include()的区别在于require()执行如果发生错误，函数会输出 错误信息，并终止脚本的运行。</p>
+<p><strong>包含函数</strong></p>
+<p>PHP常见的导致文件包含的函数如下：**include()，include_once()，require()，require_once()**，fopen()，readfile() 当使用前4个函数包含一个新的文件时，只要文件内容符合PHP语法规范，那么任何扩展名都可以被PHP解析。包含非PHP语法规范源文件时，将会暴露其源代码。</p>
+<h3 id="伪协议利用"><a href="#伪协议利用" class="headerlink" title="伪协议利用"></a>伪协议利用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file://</span><br><span class="line">http://</span><br><span class="line">php://</span><br></pre></td></tr></table></figure>
+
+<h4 id="1、php-x2F-x2F-input"><a href="#1、php-x2F-x2F-input" class="headerlink" title="1、php:&#x2F;&#x2F;input"></a>1、php:&#x2F;&#x2F;input</h4><p>说明：用来接收POST数据。我们能够通过input把我们的语句输入上去然后执行。</p>
+<p>配合fputs使用</p>
+<p>fopen中</p>
+<table>
+<thead>
+<tr>
+<th><code>mode</code></th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&#39;r&#39;</code></td>
+<td>只读方式打开，将文件指针指向文件头。</td>
+</tr>
+<tr>
+<td><code>&#39;r+&#39;</code></td>
+<td>读写方式打开，将文件指针指向文件头。</td>
+</tr>
+<tr>
+<td><code>&#39;w&#39;</code></td>
+<td>写入方式打开，将文件指针指向文件头并将文件大小截为零。如果文件不存在则尝试创建之。</td>
+</tr>
+<tr>
+<td><code>&#39;w+&#39;</code></td>
+<td>读写方式打开，否则行为同 <code>&#39;w&#39;</code>。</td>
+</tr>
+<tr>
+<td><code>&#39;a&#39;</code></td>
+<td>写入方式打开，将文件指针指向文件末尾。如果文件不存在则尝试创建之。在这种情况下，<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.fseek.php">fseek()</a>            没有效果，写入总是追加。</td>
+</tr>
+<tr>
+<td><code>&#39;a+&#39;</code></td>
+<td>读写方式打开，将文件指针指向文件末尾。如果文件不存在则尝试创建之。在这种情况下，<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.fseek.php">fseek()</a>            只相应读取位置，写入总是追加。</td>
+</tr>
+<tr>
+<td><code>&#39;x&#39;</code></td>
+<td>创建并以写入方式打开，将文件指针指向文件头。如果文件已存在，则            <strong>fopen()</strong> 调用失败并返回 **<code>false</code>**，并生成一条            <strong><code>E_WARNING</code></strong> 级别的错误信息。如果文件不存在则尝试创建之。这和给            底层的 <code>open(2)</code> 系统调用指定            &#96;O_EXCL</td>
+</tr>
+<tr>
+<td><code>&#39;x+&#39;</code></td>
+<td>创建并以读写方式打开，其他的行为和 <code>&#39;x&#39;</code> 一样。</td>
+</tr>
+<tr>
+<td><code>&#39;c&#39;</code></td>
+<td>Open the file for writing only. If the file does not exist, it is            created. If it exists, it is neither truncated (as opposed to            <code>&#39;w&#39;</code>), nor the call to this function fails (as is            the case with <code>&#39;x&#39;</code>). The file pointer is            positioned on the beginning of the file. This may be useful if it’s            desired to get an advisory lock (see <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.flock.php">flock()</a>)            before attempting to modify the file, as using            <code>&#39;w&#39;</code> could truncate the file before the lock            was obtained (if truncation is desired,            <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.ftruncate.php">ftruncate()</a> can be used after the lock is            requested).</td>
+</tr>
+<tr>
+<td><code>&#39;c+&#39;</code></td>
+<td>Open the file for reading and writing; otherwise it has the same            behavior as <code>&#39;c&#39;</code>.</td>
+</tr>
+<tr>
+<td><code>&#39;e&#39;</code></td>
+<td>Set close-on-exec flag on the opened file descriptor. Only            available in PHP compiled on POSIX.1-2008 conform systems.</td>
+</tr>
+</tbody></table>
+<p>使用啊a，写入文件</p>
+<p>使用w，可以创建一个不存在的文件</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title="0" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                        
+                            <li title="1" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+        
+    <div id="gitalk-container" class="comment link"
+		data-enable="false"
+        data-ae="false"
+        data-ci=""
+        data-cs=""
+        data-r=""
+        data-o=""
+        data-a=""
+        data-d="false"
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
