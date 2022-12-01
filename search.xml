@@ -529,4 +529,28 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 </ol>
 ]]></content>
   </entry>
+  <entry>
+    <title>phpweb</title>
+    <url>/2022/11/30/xy/</url>
+    <content><![CDATA[<ol>
+<li></li>
+</ol>
+<p>依赖系统的时区设置是不安全的。<br>您需要使用 date.timezone 设置或 date_default_timezone_set（） 函数。<br>如果您使用了其中任何一种方法，但仍然收到此警告，则很可能拼写错了时区标识符。<br>我们目前选择了时区“UTC”，但请设置 date.timezone 以选择您的时区。在 &#x2F;var&#x2F;www&#x2F;html&#x2F;index.php 第 24 行</p>
+<p>没有太多有用信息</p>
+<p>2.看见有刷新，抓个包</p>
+<pre><code>&lt;form  id=form1 name=form1 action=&quot;index.php&quot; method=post&gt;     
+&lt;input type=hidden id=func name=func value=&#39;date&#39;&gt;     
+&lt;input type=hidden id=p name=p value=&#39;Y-m-d h:i:s a&#39;&gt;
+</code></pre>
+<p>有输入</p>
+<p>先使用file_get_contents (index.php)试一下</p>
+<p>可以获得源代码</p>
+<p>3.获得index</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$disable_fun = array(&quot;exec&quot;,&quot;shell_exec&quot;,&quot;system&quot;,&quot;passthru&quot;,&quot;proc_open&quot;,&quot;show_source&quot;,&quot;phpinfo&quot;,&quot;popen&quot;,&quot;dl&quot;,&quot;eval&quot;,&quot;proc_terminate&quot;,&quot;touch&quot;,&quot;escapeshellcmd&quot;,&quot;escapeshellarg&quot;,&quot;assert&quot;,&quot;substr_replace&quot;,&quot;call_user_func_array&quot;,&quot;call_user_func&quot;,&quot;array_filter&quot;, &quot;array_walk&quot;,  &quot;array_map&quot;,&quot;registregister_shutdown_function&quot;,&quot;register_tick_function&quot;,&quot;filter_var&quot;, &quot;filter_var_array&quot;, &quot;uasort&quot;, &quot;uksort&quot;, &quot;array_reduce&quot;,&quot;array_walk&quot;, &quot;array_walk_recursive&quot;,&quot;pcntl_exec&quot;,&quot;fopen&quot;,&quot;fwrite&quot;,&quot;file_put_contents&quot;);</span><br><span class="line">function gettime($func, $p) &#123;</span><br><span class="line">    $result = call_user_func($func, $p);</span><br><span class="line">    $a= gettype($result);</span><br><span class="line">    if ($a == &quot;string&quot;) &#123;</span><br><span class="line">        return $result;</span><br><span class="line">    &#125; else &#123;return &quot;&quot;;&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Test &#123;</span><br><span class="line">    var $p = &quot;Y-m-d h:i:s a&quot;;</span><br><span class="line">    var $func = &quot;date&quot;;</span><br><span class="line">    function __destruct() &#123;</span><br><span class="line">        if ($this-&gt;func != &quot;&quot;) &#123;</span><br><span class="line">            echo gettime($this-&gt;func, $this-&gt;p);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$func = $_REQUEST[&quot;func&quot;];</span><br><span class="line">$p = $_REQUEST[&quot;p&quot;];</span><br><span class="line"></span><br><span class="line">if ($func != null) &#123;</span><br><span class="line">    $func = strtolower($func);</span><br><span class="line">    if (!in_array($func,$disable_fun)) &#123;</span><br><span class="line">        echo gettime($func, $p);</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        die(&quot;Hacker...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>参考抓包使用反序列化</p>
+<p>3.func为函数</p>
+<p>p为参数</p>
+]]></content>
+  </entry>
 </search>
