@@ -571,4 +571,44 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <p><img src="/2022/12/01/hhy/result.jpg" alt="题图"></p>
 ]]></content>
   </entry>
+  <entry>
+    <title>easy_serialize_php</title>
+    <url>/2022/11/26/io/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$function = @$_GET[&#x27;f&#x27;];</span><br><span class="line"></span><br><span class="line">function filter($img)&#123;</span><br><span class="line">    $filter_arr = array(&#x27;php&#x27;,&#x27;flag&#x27;,&#x27;php5&#x27;,&#x27;php4&#x27;,&#x27;fl1g&#x27;);</span><br><span class="line">    $filter = &#x27;/&#x27;.implode(&#x27;|&#x27;,$filter_arr).&#x27;/i&#x27;;</span><br><span class="line">    return preg_replace($filter,&#x27;&#x27;,$img);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if($_SESSION)&#123;</span><br><span class="line">    unset($_SESSION);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$_SESSION[&quot;user&quot;] = &#x27;guest&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;] = $function;</span><br><span class="line"></span><br><span class="line">extract($_POST);</span><br><span class="line"></span><br><span class="line">if(!$function)&#123;</span><br><span class="line">    echo &#x27;&lt;a href=&quot;index.php?f=highlight_file&quot;&gt;source_code&lt;/a&gt;&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!$_GET[&#x27;img_path&#x27;])&#123;</span><br><span class="line">    $_SESSION[&#x27;img&#x27;] = base64_encode(&#x27;guest_img.png&#x27;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    $_SESSION[&#x27;img&#x27;] = sha1(base64_encode($_GET[&#x27;img_path&#x27;]));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$serialize_info = filter(serialize($_SESSION));</span><br><span class="line"></span><br><span class="line">if($function == &#x27;highlight_file&#x27;)&#123;</span><br><span class="line">    highlight_file(&#x27;index.php&#x27;);</span><br><span class="line">&#125;else if($function == &#x27;phpinfo&#x27;)&#123;</span><br><span class="line">    eval(&#x27;phpinfo();&#x27;); //maybe you can find something in here!</span><br><span class="line">&#125;else if($function == &#x27;show_image&#x27;)&#123;</span><br><span class="line">    $userinfo = unserialize($serialize_info);</span><br><span class="line">    echo file_get_contents(base64_decode($userinfo[&#x27;img&#x27;]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li></li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>Exec</title>
+    <url>/2022/12/02/kk/</url>
+    <content><![CDATA[<p>1.分号操作符 (; ) 分号操作符使你可以一口气运行几个命令，命令顺序执行。</p>
+<p>2.或操作符 (||) 或操作符 (||)很像编程中的else语句。上面的操作符允许你在第一个命令失败的情况下执行第二个命令，但第一个命令成功则第二个不会执行</p>
+<ol>
+<li><p>和号操作符 (&amp;) ‘&amp;’的作用是使命令在后台运行。只要在命令后面跟上一个空格和 ‘&amp;’。你可以一口气在后台运行多个命令。</p>
+</li>
+<li><p>分号操作符 (; ) 分号操作符使你可以一口气运行几个命令，命令顺序执行。</p>
+</li>
+<li><p>与操作符 (&amp;&amp;) 如果第一个命令执行成功，与操作符 (&amp;&amp;)才会执行第二个命令，也就是说，第一个命令退出状态是0，后面的才会执行。在UNIX里面，0表示无错误，而所有非0返回值都是各种错误。</p>
+</li>
+<li><p>或操作符 (||) 或操作符 (||)很像编程中的else语句。上面的操作符允许你在第一个命令失败的情况下执行第二个命令，但第一个命令成功则第二个不会执行</p>
+</li>
+<li><p>非操作符 (!) 非操作符 (!)很像except语句。这个命令会执行除了提供的条件外的所有的语句。这个是纯逻辑操作符，注入很少用</p>
+</li>
+<li><p>管道操作符 (|) PIPE在将第一个命令的输出作为第二个命令的输入时很有用。</p>
+</li>
+<li><p>优先操作符 () 指定优先级</p>
+</li>
+<li><p>连接符 () 连接符 ()如它名字所说，被用于连接shell中那些太长而需要分成多行的命令。可以在输入一个“\”之后就回车，然后继续输入命令行，直到输入完成。</p>
+<p>可以使用||，前面错误，再执行后边的命令</p>
+<p>cd..&#x2F;..&#x2F;..&#x2F;与ls必须前后执行</p>
+<p>所以不能用分号连接</p>
+<p>![进程图](kk&#x2F;the first step.jpg)</p>
+<p><img src="/2022/12/02/kk/effect.jpg" alt="进程图"></p>
+</li>
+</ol>
+]]></content>
+  </entry>
 </search>
