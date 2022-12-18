@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>爬虫百度 - EZzz</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="network
+for
+range
+先确定用requests库进行请求
+使用re.findall来进行正则匹配
+使用os库来进行保存
+打开https://image.baidu.com/search,"> 
+    
+    <link rel="alternative" href="atom.xml" title="EZzz" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+    
+    
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="爬虫百度 - EZzz"/>
+    <meta name="twitter:description" content="network
+for
+range
+先确定用requests库进行请求
+使用re.findall来进行正则匹配
+使用os库来进行保存
+打开https://image.baidu.com/search,"/>
+    
+    
+    
+    
+    <meta property="og:site_name" content="EZzz"/>
+    <meta property="og:type" content="object"/>
+    <meta property="og:title" content="爬虫百度 - EZzz"/>
+    <meta property="og:description" content="network
+for
+range
+先确定用requests库进行请求
+使用re.findall来进行正则匹配
+使用os库来进行保存
+打开https://image.baidu.com/search,"/>
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+    <script>window.searchDbPath = "/search.xml";</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EZzz</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">爬虫百度</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">爬虫百度</h1>
+        <div class="stuff">
+            <span>十二月 14, 2022</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <p>network</p>
+<p>for</p>
+<p>range</p>
+<p>先确定用requests库进行请求</p>
+<p>使用re.findall来进行正则匹配</p>
+<p>使用os库来进行保存</p>
+<p>打开<a target="_blank" rel="noopener" href="https://image.baidu.com/search">https://image.baidu.com/search</a></p>
+<p>打开network</p>
+<p>观察得到负载中的pn代表着翻页</p>
+<p><img src="/2022/12/14/pachong/1.jpg" alt="题图"></p>
+<p>所以在网址后面加上acjson?再利用parma&#x3D;{}的形式传参</p>
+<p>伪装一下headers</p>
+<p>for一下pn，使用range(start, stop, step)</p>
+<p>for pn in range</p>
+<ul>
+<li>start: 计数从 start 开始。默认是从 0 开始。例如range（5）等价于range（0， 5）;</li>
+<li>stop: 计数到 stop 结束，<strong>但不包括 stop</strong>。例如：range（0， 5） 是[0, 1, 2, 3, 4]没有5</li>
+<li>step：步长，默认为1。例如：range（0， 5） 等价于 range(0, 5, 1)</li>
+</ul>
+<p>应该把翻页放在请求之前，可以把翻页设为第一页，且循环中有keyword，所以应该先循环再请求</p>
+<p>再re.findall()中加上re.S可以遍历所有的requests；</p>
+<p>写入文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">with open(os.path.join(save_dir, f&#x27;&#123;n:06d&#125;.jpg&#x27;), &#x27;wb&#x27;) as fp:</span><br><span class="line">    fp.write(image_data)</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import os</span><br><span class="line">import re</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def get_images_from_baidu(page_num, save_dir,keyword):</span><br><span class="line">    header = &#123;&#x27;User-Agent&#x27;: &#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.95 Safari/537.36&#x27;&#125;</span><br><span class="line">    # 请求的 url</span><br><span class="line">    url = &#x27;https://image.baidu.com/search/acjson?&#x27;</span><br><span class="line">    n = 0</span><br><span class="line">    for pn in range(0, 30 * page_num, 30):</span><br><span class="line">        # 请求参数 (0, 30 * page_num, 30(步长))</span><br><span class="line">        param = &#123;&#x27;tn&#x27;: &#x27;resultjson_com&#x27;,</span><br><span class="line">                 # &#x27;logid&#x27;: &#x27;7603311155072595725&#x27;,</span><br><span class="line">                 &#x27;ipn&#x27;: &#x27;rj&#x27;,</span><br><span class="line">                 &#x27;ct&#x27;: 201326592,</span><br><span class="line">                 &#x27;is&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;fp&#x27;: &#x27;result&#x27;,</span><br><span class="line">                 &#x27;queryWord&#x27;: keyword,</span><br><span class="line">                 &#x27;cl&#x27;: 2,</span><br><span class="line">                 &#x27;lm&#x27;: -1,</span><br><span class="line">                 &#x27;ie&#x27;: &#x27;utf-8&#x27;,</span><br><span class="line">                 &#x27;oe&#x27;: &#x27;utf-8&#x27;,</span><br><span class="line">                 &#x27;adpicid&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;st&#x27;: -1,</span><br><span class="line">                 &#x27;z&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;ic&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;hd&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;latest&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;copyright&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;word&#x27;: keyword,</span><br><span class="line">                 &#x27;s&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;se&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;tab&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;width&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;height&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;face&#x27;: 0,</span><br><span class="line">                 &#x27;istype&#x27;: 2,</span><br><span class="line">                 &#x27;qc&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;nc&#x27;: &#x27;1&#x27;,</span><br><span class="line">                 &#x27;fr&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;expermode&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;force&#x27;: &#x27;&#x27;,</span><br><span class="line">                 &#x27;cg&#x27;: &#x27;&#x27;,    # 这个参数没公开，但是不可少</span><br><span class="line">                 &#x27;pn&#x27;: pn,    # 显示：30-60-90</span><br><span class="line">                 &#x27;rn&#x27;: &#x27;30&#x27;,  # 每页显示 30 条</span><br><span class="line">                 &#x27;gsm&#x27;: &#x27;96&#x27;,</span><br><span class="line">                 &#x27;1671247792743&#x27;: &#x27;&#x27;</span><br><span class="line">                 &#125;</span><br><span class="line">        request = requests.get(url=url, headers=header, params=param)</span><br><span class="line">        if request.status_code == 200:</span><br><span class="line">            print(&#x27;Request success.&#x27;)</span><br><span class="line">        request.encoding = &#x27;utf-8&#x27;</span><br><span class="line">        # 正则方式提取图片链接</span><br><span class="line">        html = request.text</span><br><span class="line">        image_url_list = re.findall(&#x27;&quot;thumbURL&quot;:&quot;(.*?)&quot;,&#x27;, html, re.S)</span><br><span class="line">        print(image_url_list)</span><br><span class="line"></span><br><span class="line">        if not os.path.exists(save_dir):</span><br><span class="line">            os.makedirs(save_dir)</span><br><span class="line">            #创建文件夹</span><br><span class="line"></span><br><span class="line">        for image_url in image_url_list:</span><br><span class="line">            image_data = requests.get(url=image_url, headers=header).content</span><br><span class="line">            with open(os.path.join(save_dir, f&#x27;&#123;n:06d&#125;.jpg&#x27;), &#x27;wb&#x27;) as fp:</span><br><span class="line">                fp.write(image_data)</span><br><span class="line">            n = n + 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    keyword=&#x27;东北大学&#x27;</span><br><span class="line">    save_dir = keyword</span><br><span class="line">    page_num = 3</span><br><span class="line">    get_images_from_baidu(page_num, save_dir,keyword)</span><br><span class="line">    print(&#x27;Get images finished.&#x27;)</span><br></pre></td></tr></table></figure>
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title="0" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                        
+                            <li title="1" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+        
+    <div id="gitalk-container" class="comment link"
+		data-enable="false"
+        data-ae="false"
+        data-ci=""
+        data-cs=""
+        data-r=""
+        data-o=""
+        data-a=""
+        data-d="false"
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
