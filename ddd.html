@@ -51,92 +51,88 @@
                 
                         <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>高考倒计时</title>
-</head>
-
-<link rel="stylesheet" href="gaokao.css">
-<link rel="stylesheet" href="sky.css">
-<script src="sky.js"></script>
-
-<body>
-
-    <div class="all">
-        <div id="wrap">
-            
-            <canvas id="canvas" width="1920" height="1080"></canvas>
-        </div>
-
-<div id="Reporting">
-<script language="javaScript">
-now = new Date(),hour = now.getHours()
-if (hour<6){document.write(" 凌晨好！同学！")}
-else if (hour<9){document.write("早上好，同学！")}
-else if (hour<12){document.write("上午好，同学!")}
-else if (hour<14){document.write("中午好，同学！")}
-else if (hour<17){document.write("下午好！同学！")}
-else if (hour<19){document.write("傍晚好！同学！")}
-else if (hour<22){document.write("晚上好！同学！")}
-else {document.write("夜深了，学习注意眼睛哦！")}
-</script>
-</div>
-
-<h2> ·距离2023年高考还有·</h2>
-
-<div id="timer"></div>
-<script language="javascript" type="text/javascript">
-    timer('2023-06-07 0:00:00','day');
- 
-    /**
-     * 入参第一个为时间字符串，第二个参数为模式选择，如果传入'day'，按天数倒计时到秒，不传值，按小时精确到秒
-     * @param timeStr
-     * @param item
-     */
-    function timer(timeStr,item){
-        setInterval(function(){
-            let nowTime = new Date(timeStr) - new Date;
-            let minutes = parseInt(nowTime / 1000 / 60 % 60, 10);//计算剩余的分钟
-            let seconds = parseInt(nowTime / 1000 % 60, 10);//计算剩余的秒数
- 
- 
-            minutes = checkTime(minutes);
-            seconds = checkTime(seconds);
-            if(item==='day'){
-                let days = parseInt(nowTime / 1000 / 60 / 60 / 24, 10); //计算剩余的天数
-                let hours = parseInt(nowTime / 1000 / 60 / 60 % 24, 10); //计算剩余的小时
-                days = checkTime(days);
-                hours = checkTime(hours);
-                document.getElementById('timer').innerHTML=days + "天" + hours + "小时" + minutes + "分" + seconds + "秒";
-            }
-            else{
-                let hours = parseInt(nowTime / ( 1000 * 60 * 60), 10); //计算剩余的小时
-                hours = checkTime(hours);
-                document.getElementById("timer").innerHTML = hours + "小时" + minutes + "分" + seconds + "秒";
-            }
-        },1000);
-    }
- 
-    function checkTime(i) { //将0-9的数字前面加上0，例1变为01
-        if (i < 10) {
-            i = "0" + i;
-        }
-        return i;
-    }
-</script>
-
-
-<a class="brinks">寄语：在奋斗的过程中，常会遭受挫折，惟有坚持到底，才会获得最后的成功！</a>	
-
-<div class="bottomsay"></div>
-<p class="bottomsay">创作者：张增豹</p>
-<p class="bottomsay">感谢支持！</p>
-</div>
-
-
-</body>
+<py-script>
+import turtle
+import math
+turtle.pen()
+t=turtle
+t.up()
+t.goto(0,150)
+t.down()
+t.color('red')
+t.begin_fill()
+t.fillcolor('red')
+t.speed(1)
+t.left(45)
+t.forward(150)
+t.right(45)
+t.forward(100)
+t.right(45)
+t.forward(100)
+t.right(45)
+t.forward(100)
+t.right(45)
+t.forward(250+math.sqrt(2)*100)
+t.right (90)
+t.speed(2)
+t.forward(250+100*math.sqrt(2))
+t.right(45)
+t.forward(100)
+t.right(45)
+t.forward(100)
+t.right(45)
+t.forward(100)
+t.right(45)
+t.forward(150)
+t.end_fill()
+t.goto(-10,0)
+t.pencolor('white')
+#L
+t.pensize(10)
+t.goto(-50,0)
+t.goto(-50,80)
+t.up ()
+#I
+t.goto(-100,0)
+t.down()
+t.goto(-160,0)
+t.goto(-130,0)
+t.goto(-130,80)
+t.goto(-160,80)
+t.goto(-100,80)
+t.up()
+#O
+t.goto(10,25)
+t.down()
+t.right(45)
+t.circle(25,extent=180)
+t.goto(60,55)
+t.circle(25,extent=180)
+t.goto(10,25)
+t.up()
+t.goto(75,80)
+t.down()
+t.goto(100,0)
+t.goto(125,80)
+t.up()
+t.goto(180,80)
+t.down()
+t.goto(140,80)
+t.goto(140,0)
+t.goto(180,0)
+t.up()
+t.goto(180,40)
+t.down()
+t.goto(140,40)
+#U
+t.up()
+t.goto(-40,-30)
+t.down()
+t.goto(-40,-80)
+t.circle(40,extent=180)
+t.goto(40,-30)
+    </py-script>
 </html>
-
                 
                 </div>
             </div>
