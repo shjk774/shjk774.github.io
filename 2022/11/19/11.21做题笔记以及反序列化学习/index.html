@@ -16,6 +16,8 @@
     <link rel="alternative" href="atom.xml" title="EZzz" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
     
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
     
     
     <meta name="twitter:card" content="summary"/>
@@ -125,8 +127,8 @@ print(serialize($a));
         
         
     <div id="gitalk-container" class="comment link"
-		data-enable="false"
-        data-ae="false"
+		data-enable="true"
+        data-ae="true"
         data-ci=""
         data-cs=""
         data-r=""
@@ -138,12 +140,18 @@ print(serialize($a));
 
     </div>
     
+        <div class="side">
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%95%E8%BF%87-wakeup"><span class="toc-number">1.</span> <span class="toc-text">绕过__wakeup()</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9Abugku-flag-php"><span class="toc-number">2.</span> <span class="toc-text">例题：bugku-flag.php</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9Abugku-welcome-to-bugkuctf"><span class="toc-number">3.</span> <span class="toc-text">例题：bugku-welcome to bugkuctf</span></a></li></ol>
+        </div>
+    
 </div>
 
 
     </div>
 </div>
 </body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 
 
 <script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
