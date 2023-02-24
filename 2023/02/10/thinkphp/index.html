@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>thinkphp - EZzz</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="1.安装composer并设置环境变量
+先通过命令行配置composer：
+1composer config -g repo.packagist composer https://packagist,"> 
+    
+    <link rel="alternative" href="atom.xml" title="EZzz" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+    
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="thinkphp - EZzz"/>
+    <meta name="twitter:description" content="1.安装composer并设置环境变量
+先通过命令行配置composer：
+1composer config -g repo.packagist composer https://packagist,"/>
+    
+    
+    
+    
+    <meta property="og:site_name" content="EZzz"/>
+    <meta property="og:type" content="object"/>
+    <meta property="og:title" content="thinkphp - EZzz"/>
+    <meta property="og:description" content="1.安装composer并设置环境变量
+先通过命令行配置composer：
+1composer config -g repo.packagist composer https://packagist,"/>
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+    <script>window.searchDbPath = "/search.xml";</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EZzz</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">thinkphp</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">thinkphp</h1>
+        <div class="stuff">
+            <span>二月 10, 2023</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <p>1.安装composer并设置环境变量</p>
+<p>先通过命令行配置composer：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer config -g repo.packagist composer https://packagist.phpcomposer.com</span><br></pre></td></tr></table></figure>
+
+<p>如果下载缓慢或上述地址产生障碍，可以使用国内阿里云镜像地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/</span><br></pre></td></tr></table></figure>
+
+<p>在cmd上安装</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer create-project topthink/think=5.1.* tp5.1test</span><br></pre></td></tr></table></figure>
+
+<p>2.ThinkPHP的URL访问规则如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://serverName/index.php/模块名/控制器名(类名)/操作名/参数/值...</span><br></pre></td></tr></table></figure>
+
+<p>3.模块设计</p>
+<p>ThinkPHP框架的默认访问模块是index，可以通过config目录下的app.php进行设置，</p>
+<p><img src="/2023/02/10/thinkphp/Users\86151\Desktop\20200323091742902.png" alt="20200323091742902"></p>
+<p>如果application目录下的模块目录只有一个，可以通过配置app.php的app_multi_molule选项设置成false</p>
+<p>也可以通过在index.php里的:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Container::get(&#x27;app&#x27;)-&gt;bind(&#x27;模块名&#x27;)-&gt;run()-&gt;send();</span><br></pre></td></tr></table></figure>
+
+<p>这种方式绑定单一的模块。</p>
+<p>空模块</p>
+<p>我们还可以通过配置app.php的其他选项来控制模块的行为属性，比如empty_module可以控制空模块：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;empty_module&#x27; =&gt; &#x27;404&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>一般可以设置一个404的页面，使空模块指向它。</p>
+<p>注意，空模块生效的前提是多模块开启和没有bind模块。</p>
+<p>另外，如果我只有一个模块index，则模块的目录可以去掉，然后配置app.php的app_multi_molule选项设置成false，只需要controller目录即可，而命名空间也就去掉了模块名：</p>
+<p>namespace app\controller;</p>
+<p>4.环境变量</p>
+<p>ThinkPHP提供了一个类库Env来获取环境变量，可以用来获取当前项目的各种目录，如应用目录、框架目录、路由目录等等</p>
+<p>获取方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Env::get(<span class="string">&#x27;app_path&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>5.控制器定义，控制器操作</p>
+<p>基础控制器</p>
+<p>BaseController.php</p>
+<p>该基础控制器仅仅提供了控制器验证功能，并注入了think\App和think\Request对象，因此你可以直接在控制器中使用app和request属性调用think\App和think\Request对象实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">namespace app\controller;</span><br><span class="line"></span><br><span class="line">use app\BaseController;</span><br><span class="line"></span><br><span class="line">class Index extends BaseController</span><br><span class="line">&#123;</span><br><span class="line">    public function index()</span><br><span class="line">    &#123;</span><br><span class="line">        $action = $this-&gt;request-&gt;action();</span><br><span class="line">        $path = $this-&gt;app-&gt;getBasePath();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基础控制器提供了数据验证功能</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">namespace app\controller;</span><br><span class="line"></span><br><span class="line">use app\BaseController;</span><br><span class="line">use think\exception\ValidateException;</span><br><span class="line"></span><br><span class="line">class Index extends BaseController</span><br><span class="line">&#123;</span><br><span class="line">    public function index()</span><br><span class="line">    &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            $this-&gt;validate( [</span><br><span class="line">                &#x27;name&#x27;  =&gt; &#x27;thinkphp&#x27;,</span><br><span class="line">                &#x27;email&#x27; =&gt; &#x27;thinkphp@qq.com&#x27;,</span><br><span class="line">            ],  &#x27;app\index\validate\User&#x27;);</span><br><span class="line">        &#125; catch (ValidateException $e) &#123;</span><br><span class="line">            // 验证失败 输出错误信息</span><br><span class="line">            dump($e-&gt;getError());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>渲染输出的三种方式</p>
+<p>1）return</p>
+<p>直接将结果return回去即可：</p>
+<p>return “这是结果”;<br>2）json输出（比如输出数组）</p>
+<p>举例如下：</p>
+<p>$data &#x3D; array(‘a’&#x3D;&gt;1,’b’&#x3D;&gt;2,’c’&#x3D;&gt;3);<br>return json($data);<br>3）模板输出</p>
+<p>前置操作</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="variable">$beforeActionList</span> = [</span><br><span class="line">    <span class="string">&#x27;first&#x27;</span>,</span><br><span class="line">    <span class="comment">//one方法执行不调用second前置</span></span><br><span class="line">    <span class="string">&#x27;second&#x27;</span> =&gt; [<span class="string">&#x27;except&#x27;</span> =&gt; <span class="string">&#x27;one&#x27;</span>],</span><br><span class="line">    <span class="comment">//third前置只能通过调用one和two方法触发</span></span><br><span class="line">    <span class="string">&#x27;third&#x27;</span> =&gt; [<span class="string">&#x27;only&#x27;</span> =&gt; <span class="string">&#x27;one,two&#x27;</span>],</span><br><span class="line">];</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">first</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;first&lt;br /&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">second</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;second&lt;br /&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">third</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;third&lt;br /&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">one</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;one&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">two</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;two&quot;</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>重定向</p>
+<p>ThinkPHP的Controller类提供了两个跳转的方法，success(msg,url)和error(msg)，用于实现跳转重定向：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public function index()</span><br><span class="line">  &#123;</span><br><span class="line">    if($this-&gt;flag)</span><br><span class="line">    &#123;</span><br><span class="line">      $this-&gt;success(&#x27;成功！&#x27;,&#x27;../&#x27;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      $this-&gt;error(&#x27;失败！&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面跳转的页面是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">thinkphp/tpl/dispatch_jump.tpl</span><br></pre></td></tr></table></figure>
+
+<p>配置也在app.php中</p>
+<p>6.数据库增删改查</p>
+<p>查询数据<br>查询的常见方法有下面的这些：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Db::name();</span><br><span class="line">Db::table();</span><br><span class="line">find();</span><br><span class="line">findOrFail();</span><br><span class="line">findOrEmpty();</span><br><span class="line">select();</span><br><span class="line">selectOrFail();</span><br><span class="line">value(&#x27;username&#x27;);</span><br><span class="line">getLastSql();</span><br><span class="line">column(&#x27;username&#x27;,&#x27;id&#x27;);  //按id排序</span><br><span class="line">order(&#x27;id&#x27;,&#x27;desc&#x27;);       //将结果倒叙排序显示，一般接于where语句之后</span><br></pre></td></tr></table></figure>
+
+<p>注意：除了find和select方法是结果查询之外，其余方法查询结果均为数据库对象，它们可以一直使用链式查询操作，直到遇到find和select方法为止。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Db::table(&#x27;think_user&#x27;)-&gt;where(&#x27;id&#x27;, 1)-&gt;find();//查询</span><br><span class="line">$data = [&#x27;foo&#x27; =&gt; &#x27;bar&#x27;, &#x27;bar&#x27; =&gt; &#x27;foo&#x27;];</span><br><span class="line">Db::name(&#x27;user&#x27;)-&gt;insert($data);//增加数据</span><br><span class="line">Db::name(&#x27;user&#x27;)</span><br><span class="line">    -&gt;where(&#x27;id&#x27;, 1)</span><br><span class="line">    -&gt;update([&#x27;name&#x27; =&gt; &#x27;thinkphp&#x27;]);//更新数据</span><br><span class="line">Db::table(&#x27;think_user&#x27;)-&gt;where(&#x27;id&#x27;,1)-&gt;delete();//删除数据    </span><br></pre></td></tr></table></figure>
+
+<p>查询表达式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">where(&#x27;字段名&#x27;,&#x27;查询表达式&#x27;,&#x27;查询条件&#x27;);</span><br></pre></td></tr></table></figure>
+
+
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title="0" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                        
+                            <li title="1" data-url="http://link.hhtjim.com/163/425570952.mp3"></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+        
+    <div id="gitalk-container" class="comment link"
+		data-enable="true"
+        data-ae="true"
+        data-ci=""
+        data-cs=""
+        data-r=""
+        data-o=""
+        data-a=""
+        data-d="false"
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class="side">
+            
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
