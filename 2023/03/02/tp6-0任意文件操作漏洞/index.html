@@ -10,7 +10,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="Fechin,"> 
-    
+    <meta name="description" content="1
+1
+14
+安装tp6.0
+1composer create-project topthink/think=6.0.0 tp6.0
+
+如果端口被占用无法安装，可以先在环境变量里删去http那一个变,"> 
     
     <link rel="alternative" href="atom.xml" title="EZzz" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -21,7 +27,13 @@
     
     <meta name="twitter:card" content="summary"/>
     <meta name="twitter:title" content="tp6.0任意文件操作漏洞 - EZzz"/>
-    
+    <meta name="twitter:description" content="1
+1
+14
+安装tp6.0
+1composer create-project topthink/think=6.0.0 tp6.0
+
+如果端口被占用无法安装，可以先在环境变量里删去http那一个变,"/>
     
     
     
@@ -29,7 +41,13 @@
     <meta property="og:site_name" content="EZzz"/>
     <meta property="og:type" content="object"/>
     <meta property="og:title" content="tp6.0任意文件操作漏洞 - EZzz"/>
-    
+    <meta property="og:description" content="1
+1
+14
+安装tp6.0
+1composer create-project topthink/think=6.0.0 tp6.0
+
+如果端口被占用无法安装，可以先在环境变量里删去http那一个变,"/>
     
 <link rel="stylesheet" href="/css/diaspora.css">
 
@@ -69,7 +87,42 @@
 
         </div>
         <div class="content markdown">
-            
+            <p>1</p>
+<p>1</p>
+<p>14</p>
+<p>安装tp6.0</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer create-project topthink/think=<span class="number">6.0</span>.<span class="number">0</span> tp6.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>如果端口被占用无法安装，可以先在环境变量里删去http那一个变量然后重新安装</p>
+<p>漏洞：</p>
+<p>可以看到官方对<strong>vendor&#x2F;topthink&#x2F;framework&#x2F;src&#x2F;think&#x2F;session&#x2F;Store.php</strong>中在<strong>id</strong>设置时多增加了一个函数，因此猜测可能是在存储<strong>Session</strong>时导致了文件写入</p>
+<p><strong>vendor&#x2F;topthink&#x2F;framework&#x2F;src&#x2F;think&#x2F;session&#x2F;Store.php</strong>中</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">save</span>(<span class="params"></span>): <span class="title">void</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">clearFlashData</span>();</span><br><span class="line"></span><br><span class="line">        <span class="variable">$sessionId</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">getId</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">empty</span>(<span class="variable language_">$this</span>-&gt;data)) &#123;</span><br><span class="line">            <span class="variable">$data</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">serialize</span>(<span class="variable">$this</span>-&gt;data);</span><br><span class="line"></span><br><span class="line">            <span class="variable language_">$this</span>-&gt;handler-&gt;<span class="title function_ invoke__">write</span>(<span class="variable">$sessionId</span>, <span class="variable">$data</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;handler-&gt;<span class="title function_ invoke__">delete</span>(<span class="variable">$sessionId</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">$this</span>-&gt;init = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到有一个write方法，跟进<strong>vendor&#x2F;topthink&#x2F;framework&#x2F;src&#x2F;think&#x2F;session&#x2F;driver&#x2F;File.php</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">write</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$sessID</span>, <span class="keyword">string</span> <span class="variable">$sessData</span></span>): <span class="title">bool</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$filename</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">getFileName</span>(<span class="variable">$sessID</span>, <span class="literal">true</span>);</span><br><span class="line">        <span class="variable">$data</span>     = <span class="variable">$sessData</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">$this</span>-&gt;config[<span class="string">&#x27;data_compress&#x27;</span>] &amp;&amp; <span class="title function_ invoke__">function_exists</span>(<span class="string">&#x27;gzcompress&#x27;</span>)) &#123;</span><br><span class="line">            <span class="comment">//数据压缩</span></span><br><span class="line">            <span class="variable">$data</span> = <span class="title function_ invoke__">gzcompress</span>(<span class="variable">$data</span>, <span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">writeFile</span>(<span class="variable">$filename</span>, <span class="variable">$data</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用了writefile</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">writeFile</span>(<span class="params"><span class="variable">$path</span>, <span class="variable">$content</span></span>): <span class="title">bool</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">bool</span>) <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$path</span>, <span class="variable">$content</span>, LOCK_EX);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>file_put_contents</strong>可以写入文件</p>
+<p>在Filephp中可知在save()中调用了write方法，所以filename为$sessionId，所以filename来自getId()方法，write中的data来在writefile中的$content</p>
+<p>然后跟进一下getid方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getId</span>(<span class="params"></span>): <span class="title">string</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;id;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>找到$this-&gt;id</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function setId($id = null): void</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;id = is_string($id) &amp;&amp; strlen($id) === 32 &amp;&amp; ctype_alnum($id) ? $id : md5(microtime(true) . session_create_id());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现id需要为32位</p>
+<p>找到控制id的方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span>(<span class="params"><span class="variable">$request</span>, <span class="built_in">Closure</span> <span class="variable">$next</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// Session初始化</span></span><br><span class="line">        <span class="variable">$varSessionId</span> = <span class="variable language_">$this</span>-&gt;app-&gt;config-&gt;<span class="title function_ invoke__">get</span>(<span class="string">&#x27;session.var_session_id&#x27;</span>);</span><br><span class="line">        <span class="variable">$cookieName</span>   = <span class="variable language_">$this</span>-&gt;session-&gt;<span class="title function_ invoke__">getName</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$varSessionId</span> &amp;&amp; <span class="variable">$request</span>-&gt;<span class="title function_ invoke__">request</span>(<span class="variable">$varSessionId</span>)) &#123;</span><br><span class="line">            <span class="variable">$sessionId</span> = <span class="variable">$request</span>-&gt;<span class="title function_ invoke__">request</span>(<span class="variable">$varSessionId</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable">$sessionId</span> = <span class="variable">$request</span>-&gt;<span class="title function_ invoke__">cookie</span>(<span class="variable">$cookieName</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$sessionId</span>) &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;session-&gt;<span class="title function_ invoke__">setId</span>(<span class="variable">$sessionId</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">$this</span>-&gt;session-&gt;<span class="title function_ invoke__">init</span>();</span><br><span class="line"></span><br><span class="line">        <span class="variable">$request</span>-&gt;<span class="title function_ invoke__">withSession</span>(<span class="variable">$this</span>-&gt;session);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/** <span class="doctag">@var</span> Response $response */</span></span><br><span class="line">        <span class="variable">$response</span> = <span class="variable">$next</span>(<span class="variable">$request</span>);</span><br><span class="line"></span><br><span class="line">        <span class="variable">$response</span>-&gt;<span class="title function_ invoke__">setSession</span>(<span class="variable">$this</span>-&gt;session);</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">$this</span>-&gt;app-&gt;cookie-&gt;<span class="title function_ invoke__">set</span>(<span class="variable">$cookieName</span>, <span class="variable">$this</span>-&gt;session-&gt;<span class="title function_ invoke__">getId</span>());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$response</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>if ($sessionId) {<br>            $this-&gt;session-&gt;setId($sessionId);<br>        }</strong></p>
+<p>发现id来自sessionid，找到getname方法，sessionid&#x3D;session name&#x3D;PHPSESSID</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="comment">// session name</span></span><br><span class="line">    <span class="string">&#x27;name&#x27;</span>           =&gt; <span class="string">&#x27;PHPSESSID&#x27;</span>,</span><br><span class="line">    <span class="comment">// SESSION_ID的提交变量,解决flash上传跨域</span></span><br></pre></td></tr></table></figure>
+
+<p>所以PHPSESSID就是filename的值</p>
+
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">
